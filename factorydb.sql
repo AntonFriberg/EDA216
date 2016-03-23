@@ -14,8 +14,8 @@ set FOREIGN_KEY_CHECKS = 1;
 create table Ingredient (
   ingrName varchar(40) not null,
   saldo integer not null CHECK (saldo>0),
-  lastDel date not null,
-  delAmount integer not null CHECK (delAmount>0),
+  lastDel date,
+  delAmount integer CHECK (delAmount>0),
 
   primary key (ingrName)
   );
@@ -32,7 +32,7 @@ create table Recipe(
 
   primary key(ingrName,cookieName),
   foreign key(ingrName) references Ingredient(ingrName),
-  foreign key(cookieName) references cookie(cookieName)
+  foreign key(cookieName) references Cookie(cookieName)
   );
 
 create table Customer(
@@ -78,11 +78,85 @@ create table Pallet(
 
 
 
-  -- start transaction;
+  start transaction;
+  -- custName, Address
+  insert into Customer values
+  ("Finkakor AB","Helsingborg"),
+  ("Småbröd AB","Malmö"),
+  ("Kaffebröd AB","Landskrona"),
+  ("Bjudkakor AB","Ystad"),
+  ("Kalaskakor AB","Trelleborg"),
+  ("Partykakor AB","Kristianstad"),
+  ("Gästkakor AB","Hässleholm"),
+  ("Skånekakor AB", "Perstorp");
 
-  -- insert into TABLE values
+  -- cookieName
+  insert into Cookie values
+  ("Nut ring"),
+  ("Nut cookie"),
+  ("Amneris"),
+  ("Tango"),
+  ("Almond delight"),
+  ("Berliner");
 
-  -- (Attr1,attr2),
-  -- (Attr3,Attr4);
+  -- Name, saldo, lastDel,delAmount
+  insert into Ingredient values
+  ("Flour",0,null,null),
+  ("Butter",0,null,null),
+  ("Icing sugar",0,null,null),
+  ("Roasted, chopped nuts",0,null,null),
+  ("Fine-ground nuts",0,null,null),
+  ("Ground, roasted nuts",0,null,null),
+  ("Bread crumbs",0,null,null),
+  ("Sugar",0,null,null),
+  ("Egg whites",0,null,null),
+  ("Chocolate",0,null,null),
+  ("Marzipan",0,null,null),
+  ("Eggs",0,null,null),
+  ("Potato starch",0,null,null),
+  ("Wheat flour",0,null,null),
+  ("Chopped almonds",0,null,null),
+  ("Sodium bicarbonate",0,null,null),
+  ("Vanilla",0,null,null),
+  ("Cinnamon",0,null,null),
+  ("Vanilla sugar",0,null,null);
 
- -- commit;
+  -- ingrName,cookieName, qty (dl is written as cl)
+  insert into Recipe values
+  ("Flour", "Nut ring", 450),
+  ("Butter", "Nut ring", 450),
+  ("Icing sugar", "Nut ring", 190),
+  ("Roasted, chopped nuts", "Nut ring", 225),
+
+  ("Fine-ground nuts", "Nut cookie", 750),
+  ("Ground, roasted nuts", "Nut cookie", 625),
+  ("Bread crumbs", "Nut cookie", 125),
+  ("Sugar", "Nut cookie", 375),
+  ("Egg whites", "Nut cookie", 35),
+  ("Chocolate", "Nut cookie", 50),
+
+  ("Marzipan", "Amneris", 750),
+  ("Butter", "Amneris", 250),
+  ("Eggs", "Amneris", 250),
+  ("Potato starch", "Amneris", 25),
+  ("Wheat flour", "Amneris", 25),
+
+  ("Butter", "Tango", 200),
+  ("Sugar", "Tango", 250),
+  ("Flour", "Tango", 300),
+  ("Sodium bicarbonate", "Tango", 4),
+  ("Vanilla", "Tango", 2),
+
+  ("Butter", "Almond delight", 400),
+  ("Sugar", "Almond delight", 270),
+  ("Chopped almonds", "Almond delight", 279),
+  ("Flour", "Almond delight", 400),
+  ("Cinnamon", "Almond delight", 10),
+
+  ("Flour","Berliner", 350),
+  ("Butter","Berliner", 250),
+  ("Icing sugar", "Berliner", 100),
+  ("Eggs", "Berliner", 50),
+  ("Vanilla sugar", "Berliner", 5),
+  ("Chocolate", "Berliner", 50);
+  commit;

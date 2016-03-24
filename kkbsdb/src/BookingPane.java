@@ -84,7 +84,7 @@ public class BookingPane extends BasicPane {
 
 
 		JPanel p = new JPanel();
-		p.setLayout(new GridLayout(1, 2));
+		p.setLayout(new GridLayout(1, 1));
 		p.add(p1);
 		return p;
 	}
@@ -129,7 +129,7 @@ public class BookingPane extends BasicPane {
 	 */
 	public JComponent createBottomPanel() {
 		JButton[] buttons = new JButton[1];
-		buttons[0] = new JButton("Book ticket");
+		buttons[0] = new JButton("Produce pallet");
 		return new ButtonAndMessagePanel(buttons, messageLabel,
 				new ActionHandler());
 	}
@@ -179,32 +179,12 @@ public class BookingPane extends BasicPane {
 			if (cookieList.isSelectionEmpty()) {
 				return;
 			}
-			String movieName = cookieList.getSelectedValue();
+			String cookieName = cookieList.getSelectedValue();
 			chosenCookieNameLabel=new JLabel(cookieList.getSelectedValue());
 			/* --- insert own code here --- */
 		}
 	}
 
-	/**
-	 * A class that listens for clicks in the date list.
-	 */
-	class DateSelectionListener implements ListSelectionListener {
-		/**
-		 * Called when the user selects a name in the date list. Fetches
-		 * performance data from the database and displays it in the text
-		 * fields.
-		 * 
-		 * @param e
-		 *            The selected list item.
-		 */
-		public void valueChanged(ListSelectionEvent e) {
-			if (cookieList.isSelectionEmpty()) {
-				return;
-			}
-			String movieName = cookieList.getSelectedValue();
-			/* --- insert own code here --- */
-		}
-	}
 
 	/**
 	 * A class that listens for button clicks.

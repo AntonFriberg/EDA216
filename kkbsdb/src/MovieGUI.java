@@ -31,7 +31,7 @@ public class MovieGUI {
 	public MovieGUI(Database db) {
 		this.db = db;
 
-		JFrame frame = new JFrame("MovieBooking");
+		JFrame frame = new JFrame("Cookie baking");
 		tabbedPane = new JTabbedPane();
 
 		UserLoginPane userLoginPane = new UserLoginPane(db);

@@ -8,3 +8,5 @@
 1458821985247	Rename field 'currentUserNameLabel'
 1458821993601	Rename field 'nameListModel'
 1458822003575	Rename field 'nameList'
+1458822961718	Rename local variable 'movieName'
+1458826698943	Rename field 'test'

@@ -51,7 +51,7 @@ public class BasicPane extends JPanel {
                                 bottomPanel.getBorder()));
         rightPanel.add(topPanel, BorderLayout.NORTH);
         rightPanel.add(middlePanel, BorderLayout.CENTER);
-        rightPanel.add(bottomPanel, BorderLayout.SOUTH);
+        add(bottomPanel, BorderLayout.SOUTH);
         add(rightPanel, BorderLayout.CENTER);
     }
         

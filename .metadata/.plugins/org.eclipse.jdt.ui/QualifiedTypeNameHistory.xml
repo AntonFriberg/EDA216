@@ -1,2 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.awt.BorderLayout"/>
+<fullyQualifiedTypeName name="java.awt.CardLayout"/>
+<fullyQualifiedTypeName name="java.awt.event.ItemListener"/>
+<fullyQualifiedTypeName name="javax.swing.JTextField"/>
+<fullyQualifiedTypeName name="java.awt.GridLayout"/>
+<fullyQualifiedTypeName name="org.jdatepicker.impl.JDatePanelImpl"/>
+<fullyQualifiedTypeName name="org.jdatepicker.impl.JDatePickerImpl"/>
+<fullyQualifiedTypeName name="org.jdatepicker.impl.UtilDateModel"/>
+<fullyQualifiedTypeName name="java.util.Properties"/>
+<fullyQualifiedTypeName name="org.jdatepicker.JDateComponentFactory"/>
+<fullyQualifiedTypeName name="net.sourceforge.jdatepicker.impl.JDatePanelImpl"/>
+<fullyQualifiedTypeName name="net.sourceforge.jdatepicker.impl.UtilDateModel"/>
+<fullyQualifiedTypeName name="net.sourceforge.jdatepicker.impl.JDatePickerImpl"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="java.util.Calendar"/>
+</qualifiedTypeNameHistroy>

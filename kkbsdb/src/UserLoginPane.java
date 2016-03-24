@@ -1,14 +1,21 @@
-
+//http://www.codejava.net/java-se/swing/how-to-use-jdatepicker-to-display-calendar-component
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
+import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
+import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Properties;
 
 /**
  * The GUI pane where a new user logs in. Contains a text field where the user
@@ -77,8 +84,10 @@ public class UserLoginPane extends BasicPane{
 	 * @return The top panel.
 	 */
 	//test
-	final static String BUTTONPANEL = "Card with JButtons";
-    final static String TEXTPANEL = "Card with JTextField";
+	final static String CHOOSEPANEL = "Please choose searching method";
+    final static String TEXTPANEL = "Search by pallet number";
+    final static String CALENDERPANEL= "Search pallet by date";
+    final static String ALLPANEL = "Search all pallets";
     
 	public JComponent createMiddlePanel() {
 		
@@ -121,7 +130,7 @@ public class UserLoginPane extends BasicPane{
 	    JPanel p=new JPanel();
 	    p.setLayout(new GridLayout(2, 1));
 	    JPanel comboBoxPane = new JPanel(); //use FlowLayout
-        String comboBoxItems[] = { BUTTONPANEL, TEXTPANEL };
+        String comboBoxItems[] = { CHOOSEPANEL, TEXTPANEL, CALENDERPANEL, ALLPANEL};
         JComboBox cb = new JComboBox(comboBoxItems);
         cb.setEditable(false);
         cb.addItemListener(new ItemHandler());
@@ -129,19 +138,33 @@ public class UserLoginPane extends BasicPane{
         
         //Create the "cards".
         JPanel card1 = new JPanel();
-        card1.setLayout(new GridLayout(3, 1));
-        card1.add(new JButton("Button 1"));
-        card1.add(new JButton("Button 2"));
-        card1.add(new JButton("Button 3"));
-        
+      
         JPanel card2 = new JPanel();
-        card2.add(new JTextField("TextField", 20));
+        card2.setLayout(new GridLayout(2, 1));
+        JTextField text=new JTextField("Please enter the pallet number");
+        text.setEditable(false);
+        card2.add(text);
+        card2.add(new JTextField("", 20));
+       
+        JPanel card3=new JPanel();
+        UtilDateModel model = new UtilDateModel();
+        JDatePanelImpl datePanel = new JDatePanelImpl(model);
+        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
+        card3.add(datePicker);
+        
+        JPanel card4=new JPanel();
+        JTextField text1=new JTextField("Search for all pallets by clicking search");
+        text1.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        text1.setEditable(false);
+        card4.add(text1);
         
         //Create the panel that contains the "cards".
         chosenPanel = new JPanel(new CardLayout());
-        chosenPanel.add(card1, BUTTONPANEL);
+        chosenPanel.add(card1, CHOOSEPANEL);
         chosenPanel.add(card2, TEXTPANEL);
-        //p.setLayout(new GridLayout(2, 1));
+        chosenPanel.add(card3,CALENDERPANEL);
+        chosenPanel.add(card4,ALLPANEL);
+        
         p.add(comboBoxPane, BorderLayout.PAGE_START);
         p.add(chosenPanel, BorderLayout.CENTER);
 		//test

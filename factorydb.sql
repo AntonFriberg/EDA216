@@ -160,11 +160,22 @@ create table Pallet(
   ("Vanilla sugar", "Berliner", 5),
   ("Chocolate", "Berliner", 50);
 
+-- billId, delDate, isDel, custName, custAddr
   insert into Bill values
     (1, "2016-03-24", null, "Bjudkakor AB", "Ystad"),
     (2, "2016-02-29", null, "Finkakor AB", "Helsingborg"),
     (3, "2016-03-04", null, "Gästkakor AB", "Hässleholm");
 
-  -- insert into Pallet values
-    -- (1, "Berliner", "1")
+-- billId, cookieName, nbrOfPallets
+  insert into BillSpec values
+    (1, "Berliner", 2),
+    (2, "Tango", 1),
+    (3, "Amneris", 1);
+
+-- palletNbr, cookieName, billId, bakeDate, isBlocked, location
+  insert into Pallet values
+    (1, "Berliner", "2016-03-22", null, "Warehouse", 1),
+    (2, "Berliner", "2016-03-21", null, "Warehouse", 1),
+    (3, "Tango", "2016-03-19", null, "Warehouse", 2),
+    (4, "Amneris", "2016-03-18", null, "Warehouse", 3);
   commit;

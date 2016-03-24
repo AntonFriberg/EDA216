@@ -5,3 +5,6 @@
 1458815416850	Copy compilation units
 1458815428741	Delete element
 1458815433176	Delete element
+1458821985247	Rename field 'currentUserNameLabel'
+1458821993601	Rename field 'nameListModel'
+1458822003575	Rename field 'nameList'

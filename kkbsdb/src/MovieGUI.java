@@ -35,11 +35,11 @@ public class MovieGUI {
 		tabbedPane = new JTabbedPane();
 
 		UserLoginPane userLoginPane = new UserLoginPane(db);
-		tabbedPane.addTab("User login", null, userLoginPane,
-				"Log in as a new user");
+		tabbedPane.addTab("Pallet search", null, userLoginPane,
+				"Used to search for one or more pallets");
 
 		BookingPane bookingPane = new BookingPane(db);
-		tabbedPane.addTab("Book ticket", null, bookingPane, "Book a ticket");
+		tabbedPane.addTab("Add pallet", null, bookingPane, "Add a produced pallet to the db");
 
 		tabbedPane.setSelectedIndex(0);
 
@@ -55,7 +55,7 @@ public class MovieGUI {
 		
 		/* --- change code here --- */
 		/* --- change xxx to your user name, yyy to your password --- */
-		if (db.openConnection("xxx", "yyy")) {
+		if (db.openConnection("db01", "dinmamma1")) {
 			userLoginPane.displayMessage("Connected to database");
 		} else {
 			userLoginPane.displayMessage("Could not connect to database");

@@ -18,27 +18,17 @@ public class BookingPane extends BasicPane {
 	/**
 	 * A label showing the name of the current user.
 	 */
-	private JLabel currentUserNameLabel;
+	private JLabel chosenCookieNameLabel;
 
 	/**
 	 * The list model for the movie name list.
 	 */
-	private DefaultListModel<String> nameListModel;
+	private DefaultListModel<String> cookieListModel;
 
 	/**
 	 * The movie name list.
 	 */
-	private JList<String> nameList;
-
-	/**
-	 * The list model for the performance date list.
-	 */
-	private DefaultListModel<String> dateListModel;
-
-	/**
-	 * The performance date list.
-	 */
-	private JList<String> dateList;
+	private JList<String> cookieList;
 
 	/**
 	 * The text fields where the movie data is shown.
@@ -48,27 +38,24 @@ public class BookingPane extends BasicPane {
 	/**
 	 * The number of the movie name field.
 	 */
-	private static final int MOVIE_NAME = 0;
+	private static final int PALLET_NBR = 0;
 
 	/**
 	 * The number of the performance date field.
 	 */
-	private static final int PERF_DATE = 1;
+	private static final int DATE = 1;
 
 	/**
 	 * The number of the movie theater field.
 	 */
-	private static final int THEATER_NAME = 2;
+	private static final int TIME = 2;
 
-	/**
-	 * The number of the 'number of free seats' field.
-	 */
-	private static final int FREE_SEATS = 3;
+
 
 	/**
 	 * The total number of fields.
 	 */
-	private static final int NBR_FIELDS = 4;
+	private static final int NBR_FIELDS = 3;
 
 	/**
 	 * Create the booking pane.
@@ -87,26 +74,18 @@ public class BookingPane extends BasicPane {
 	 * @return The left panel.
 	 */
 	public JComponent createLeftPanel() {
-		nameListModel = new DefaultListModel<String>();
+		cookieListModel = new DefaultListModel<String>();
 
-		nameList = new JList<String>(nameListModel);
-		nameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		nameList.setPrototypeCellValue("123456789012");
-		nameList.addListSelectionListener(new NameSelectionListener());
-		JScrollPane p1 = new JScrollPane(nameList);
+		cookieList = new JList<String>(cookieListModel);
+		cookieList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cookieList.setPrototypeCellValue("123456789012");
+		cookieList.addListSelectionListener(new NameSelectionListener());
+		JScrollPane p1 = new JScrollPane(cookieList);
 
-		dateListModel = new DefaultListModel<String>();
-
-		dateList = new JList<String>(dateListModel);
-		dateList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		dateList.setPrototypeCellValue("123456789012");
-		dateList.addListSelectionListener(new DateSelectionListener());
-		JScrollPane p2 = new JScrollPane(dateList);
 
 		JPanel p = new JPanel();
 		p.setLayout(new GridLayout(1, 2));
 		p.add(p1);
-		p.add(p2);
 		return p;
 	}
 
@@ -117,10 +96,9 @@ public class BookingPane extends BasicPane {
 	 */
 	public JComponent createTopPanel() {
 		String[] texts = new String[NBR_FIELDS];
-		texts[MOVIE_NAME] = "Movie";
-		texts[PERF_DATE] = "Date";
-		texts[THEATER_NAME] = "Plays at";
-		texts[FREE_SEATS] = "Free seats";
+		texts[PALLET_NBR] = "Pallet number";
+		texts[DATE] = "Date";
+		texts[TIME] = "Time";
 
 		fields = new JTextField[NBR_FIELDS];
 		for (int i = 0; i < fields.length; i++) {
@@ -132,9 +110,9 @@ public class BookingPane extends BasicPane {
 
 		JPanel p1 = new JPanel();
 		p1.setLayout(new FlowLayout(FlowLayout.LEFT));
-		p1.add(new JLabel("Current user: "));
-		currentUserNameLabel = new JLabel("");
-		p1.add(currentUserNameLabel);
+		p1.add(new JLabel("Chosen cookie: "));
+		chosenCookieNameLabel = new JLabel("");
+		p1.add(chosenCookieNameLabel);
 
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
@@ -162,7 +140,7 @@ public class BookingPane extends BasicPane {
 	 */
 	public void entryActions() {
 		clearMessage();
-		currentUserNameLabel.setText(CurrentUser.instance().getCurrentUserId());
+		chosenCookieNameLabel.setText(CurrentUser.instance().getCurrentUserId());
 		fillNameList();
 		clearFields();
 	}
@@ -171,18 +149,10 @@ public class BookingPane extends BasicPane {
 	 * Fetch movie names from the database and display them in the name list.
 	 */
 	private void fillNameList() {
-		nameListModel.removeAllElements();
+		cookieListModel.removeAllElements();
         /* --- insert own code here --- */
 	}
 
-	/**
-	 * Fetch performance dates from the database and display them in the date
-	 * list.
-	 */
-	private void fillDateList() {
-		dateListModel.removeAllElements();
-        /* --- insert own code here --- */
-	}
 
 	/**
 	 * Clear all text fields.
@@ -206,10 +176,11 @@ public class BookingPane extends BasicPane {
 		 *            The selected list item.
 		 */
 		public void valueChanged(ListSelectionEvent e) {
-			if (nameList.isSelectionEmpty()) {
+			if (cookieList.isSelectionEmpty()) {
 				return;
 			}
-			String movieName = nameList.getSelectedValue();
+			String movieName = cookieList.getSelectedValue();
+			chosenCookieNameLabel=new JLabel(cookieList.getSelectedValue());
 			/* --- insert own code here --- */
 		}
 	}
@@ -227,11 +198,10 @@ public class BookingPane extends BasicPane {
 		 *            The selected list item.
 		 */
 		public void valueChanged(ListSelectionEvent e) {
-			if (nameList.isSelectionEmpty() || dateList.isSelectionEmpty()) {
+			if (cookieList.isSelectionEmpty()) {
 				return;
 			}
-			String movieName = nameList.getSelectedValue();
-			String date = dateList.getSelectedValue();
+			String movieName = cookieList.getSelectedValue();
 			/* --- insert own code here --- */
 		}
 	}
@@ -249,15 +219,14 @@ public class BookingPane extends BasicPane {
 		 *            The event object (not used).
 		 */
 		public void actionPerformed(ActionEvent e) {
-			if (nameList.isSelectionEmpty() || dateList.isSelectionEmpty()) {
+			if (cookieList.isSelectionEmpty() ) {
 				return;
 			}
 			if (!CurrentUser.instance().isLoggedIn()) {
 				displayMessage("Must login first");
 				return;
 			}
-			String movieName = nameList.getSelectedValue();
-			String date = dateList.getSelectedValue();
+			String movieName = cookieList.getSelectedValue();
 			/* --- insert own code here --- */
 		}
 	}

@@ -1,5 +1,4 @@
 
-
 import java.sql.*;
 
 /**
@@ -35,9 +34,7 @@ public class Database {
 	public boolean openConnection(String userName, String password) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(
-					"jdbc:mysql://puccini.cs.lth.se/" + userName, userName,
-					password);
+			conn = DriverManager.getConnection("jdbc:mysql://puccini.cs.lth.se/" + userName, userName, password);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;

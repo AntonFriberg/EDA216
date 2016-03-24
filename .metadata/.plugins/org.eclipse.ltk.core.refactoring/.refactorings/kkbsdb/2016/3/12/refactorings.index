@@ -12,3 +12,6 @@
 1458826698943	Rename field 'test'
 1458837949559	Rename field 'BUTTONPANEL'
 1458840630225	Delete element
+1458852440942	Rename type 'UserLoginPane'
+1458852475250	Rename type 'MovieGUI'
+1458852510087	Rename type 'BookingPane'

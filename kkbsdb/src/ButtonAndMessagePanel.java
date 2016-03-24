@@ -1,5 +1,4 @@
 
-
 import javax.swing.*;
 
 import java.awt.*;
@@ -22,8 +21,7 @@ public class ButtonAndMessagePanel extends JPanel {
 	 * @param actHand
 	 *            The action listener for the buttons.
 	 */
-	public ButtonAndMessagePanel(JButton[] buttons, JLabel messageLine,
-			ActionListener actHand) {
+	public ButtonAndMessagePanel(JButton[] buttons, JLabel messageLine, ActionListener actHand) {
 		setLayout(new GridLayout(2, 1));
 
 		JPanel buttonPanel = new JPanel();

@@ -1,3 +1,5 @@
+-- Search pallet by date.
+-- drop table if exists courses, reservation, shows, movie, students, takencourses, theater, usr;
 set FOREIGN_KEY_CHECKS = 0;
 
 drop table if exists bill;
@@ -159,12 +161,4 @@ create table Pallet(
   ("Eggs", "Berliner", 50),
   ("Vanilla sugar", "Berliner", 5),
   ("Chocolate", "Berliner", 50);
-
-  insert into Bill values
-    (1, "2016-03-24", null, "Bjudkakor AB", "Ystad"),
-    (2, "2016-02-29", null, "Finkakor AB", "Helsingborg"),
-    (3, "2016-03-04", null, "Gästkakor AB", "Hässleholm");
-
-  -- insert into Pallet values
-    -- (1, "Berliner", "1")
   commit;

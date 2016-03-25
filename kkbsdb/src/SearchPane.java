@@ -24,15 +24,6 @@ import java.util.Properties;
  */
 public class SearchPane extends BasicPane{
 	private static final long serialVersionUID = 1;
-	/**
-	 * The text field where the user id is entered.
-	 */
-	private JTextField[] fields;
-
-	/**
-	 * The number of the field where the user id is entered.
-	 */
-	private static final int USER_ID = 0;
 
 	/**
 	 * A label showing the name of the current user.
@@ -53,24 +44,6 @@ public class SearchPane extends BasicPane{
 	 * The number of the movie name field.
 	 */
 	private static final int PALLET_NBR = 0;
-
-	/**
-	 * The number of the performance date field.
-	 */
-	private static final int DATE = 1;
-
-	/**
-	 * The number of the movie theater field.
-	 */
-	private static final int TIME = 2;
-
-
-
-	/**
-	 * The total number of fields.
-	 */
-	private static final int NBR_FIELDS = 3;
-
 
 	private JPanel chosenPanel;
 	public SearchPane(Database db) {
@@ -97,6 +70,10 @@ public class SearchPane extends BasicPane{
 		JButton b2=new JButton("Block");
 		JButton b3=new JButton("Unblock");
 		
+		b1.addActionListener(new DetailActionListener());
+		b2.addActionListener(new BlockActionListener());
+		b3.addActionListener(new BlockActionListener());
+		
 		p1.add(b1);
 		p1.add(b2);
 		p1.add(b3);
@@ -112,7 +89,7 @@ public class SearchPane extends BasicPane{
 		p.setLayout(new GridLayout(1, 1));
 		cookieListModel = new DefaultListModel<String>();
 		cookieList = new JList<String>(cookieListModel);
-		cookieList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cookieList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		cookieList.setPrototypeCellValue("123456789012");
 		cookieList.addListSelectionListener(new NameSelectionListener());
 		JScrollPane p2 = new JScrollPane(cookieList);
@@ -128,15 +105,9 @@ public class SearchPane extends BasicPane{
 	 * @return The bottom panel.
 	 */
 	public JComponent createBottomPanel() {		
-		String[] texts = new String[NBR_FIELDS];
-		texts[USER_ID] = "User id";
-		fields = new JTextField[NBR_FIELDS];
-		fields[USER_ID] = new JTextField(20);
-		//test
 		JButton[] buttons = new JButton[1];
 		buttons[0] = new JButton("Search");
 		ActionHandler actHand = new ActionHandler();
-		fields[USER_ID].addActionListener(actHand);
 		return new ButtonAndMessagePanel(buttons, messageLabel, actHand);
 	}
 	
@@ -195,6 +166,7 @@ public class SearchPane extends BasicPane{
 	/**
 	 * A class which listens for button clicks.
 	 */
+	//Denna sköter searchknappen
 	class ActionHandler implements ActionListener {
 		/**
 		 * Called when the user clicks the login button. Checks with the
@@ -205,11 +177,12 @@ public class SearchPane extends BasicPane{
 		 *            The event object (not used).
 		 */
 		public void actionPerformed(ActionEvent e) {
-			String userId = fields[USER_ID].getText();
+			//Måste hämta från fälden här
 			/* --- insert own code here --- */
 		}
 	}
 	
+	//Denna klassen hanterar de olika valen i fönstret
 	class ItemHandler implements ItemListener {
 
 		@Override
@@ -240,6 +213,27 @@ public class SearchPane extends BasicPane{
 			String cookieName = cookieList.getSelectedValue();
 			/* --- insert own code here --- */
 		}
+	}
+	//Hanterar både block och unblock
+	class BlockActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	//Hanterar detailsknappen
+	class DetailActionListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new PalletDetailGUI();
+			
+		}
+		
 	}
 	
 }

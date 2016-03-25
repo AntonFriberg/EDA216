@@ -1,0 +1,8 @@
+import javax.swing.JFrame;
+
+public class PalletDetailGUI extends JFrame {
+	
+	public PalletDetailGUI(){
+		super(this);
+	}
+}

@@ -1,0 +1,21 @@
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+
+public class PalletDetailGUI extends JFrame {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public PalletDetailGUI(){
+		setLayout(new GridLayout(5, 5));
+		add(new JTextField());
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
+		pack();
+		setVisible(true);
+	}
+}

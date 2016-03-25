@@ -14,10 +14,6 @@ import java.awt.event.*;
  */
 public class ProductionPane extends BasicPane {
 	private static final long serialVersionUID = 1;
-	/**
-	 * A label showing the name of the current user.
-	 */
-	private JLabel chosenCookieNameLabel;
 
 	/**
 	 * The list model for the movie name list.

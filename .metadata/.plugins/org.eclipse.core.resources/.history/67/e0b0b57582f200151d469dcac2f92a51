@@ -135,6 +135,7 @@ public class ProductionPane extends BasicPane {
 	 */
 	public void entryActions() {
 		clearMessage();
+		chosenCookieNameLabel.setText(CurrentUser.instance().getCurrentUserId());
 		fillNameList();
 		clearFields();
 	}
@@ -193,6 +194,10 @@ public class ProductionPane extends BasicPane {
 		 */
 		public void actionPerformed(ActionEvent e) {
 			if (cookieList.isSelectionEmpty()) {
+				return;
+			}
+			if (!CurrentUser.instance().isLoggedIn()) {
+				displayMessage("Must login first");
 				return;
 			}
 			String movieName = cookieList.getSelectedValue();

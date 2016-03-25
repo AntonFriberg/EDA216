@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -30,6 +31,7 @@ public class PalletDetailGUI extends JFrame {
 			add(new JTextField());
 		}
 		
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 		setVisible(true);
 	}

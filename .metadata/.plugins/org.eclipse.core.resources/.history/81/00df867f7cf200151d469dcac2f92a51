@@ -1,30 +1,29 @@
-
+//http://www.codejava.net/java-se/swing/how-to-use-jdatepicker-to-display-calendar-component
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
+import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
+import net.sourceforge.jdatepicker.impl.UtilDateModel;
+
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Properties;
 
 /**
  * The GUI pane where a new user logs in. Contains a text field where the user
  * id is entered and a button to log in.
  */
-public class UserLoginPane extends BasicPane{
+public class SearchPane extends BasicPane{
 	private static final long serialVersionUID = 1;
-	/**
-	 * The text field where the user id is entered.
-	 */
-	private JTextField[] fields;
-
-	/**
-	 * The number of the field where the user id is entered.
-	 */
-	private static final int USER_ID = 0;
 
 	/**
 	 * A label showing the name of the current user.
@@ -46,26 +45,8 @@ public class UserLoginPane extends BasicPane{
 	 */
 	private static final int PALLET_NBR = 0;
 
-	/**
-	 * The number of the performance date field.
-	 */
-	private static final int DATE = 1;
-
-	/**
-	 * The number of the movie theater field.
-	 */
-	private static final int TIME = 2;
-
-
-
-	/**
-	 * The total number of fields.
-	 */
-	private static final int NBR_FIELDS = 3;
-
-
 	private JPanel chosenPanel;
-	public UserLoginPane(Database db) {
+	public SearchPane(Database db) {
 		
 		super(db);
 
@@ -79,20 +60,39 @@ public class UserLoginPane extends BasicPane{
 	//test
 	final static String CHOOSEPANEL = "Please choose searching method";
     final static String TEXTPANEL = "Search by pallet number";
+    final static String CALENDERPANEL= "Search pallet by date";
+    final static String ALLPANEL = "Search all pallets";
     
-	public JComponent createMiddlePanel() {
+	public JComponent createTopPanel() {
+		JPanel p1=new JPanel();
 		
-		cookieListModel = new DefaultListModel<String>();
-
-		cookieList = new JList<String>(cookieListModel);
-		cookieList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		cookieList.setPrototypeCellValue("123456789012");
-		cookieList.addListSelectionListener(new NameSelectionListener());
-		JScrollPane p1 = new JScrollPane(cookieList);
+		JButton b1=new JButton("Details");
+		JButton b2=new JButton("Block");
+		JButton b3=new JButton("Unblock");
+		
+		b1.addActionListener(new DetailActionListener());
+		b2.addActionListener(new BlockActionListener());
+		b3.addActionListener(new BlockActionListener());
+		
+		p1.add(b1);
+		p1.add(b2);
+		p1.add(b3);
 		
 		JPanel p = new JPanel();
-		p.setLayout(new GridLayout(1,1));
 		p.add(p1);
+
+		return p;
+	}
+	
+	public JComponent createMiddlePanel(){
+		JPanel p=new JPanel();
+		p.setLayout(new GridLayout(1, 1));
+		cookieListModel = new DefaultListModel<String>();
+		cookieList = new JList<String>(cookieListModel);
+		cookieList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		cookieList.setPrototypeCellValue("123456789012");
+		JScrollPane p2 = new JScrollPane(cookieList);
+		p.add(p2);
 		return p;
 	}
 	
@@ -103,17 +103,10 @@ public class UserLoginPane extends BasicPane{
 	 * 
 	 * @return The bottom panel.
 	 */
-	public JComponent createBottomPanel() {
-		//test
-		String[] texts = new String[NBR_FIELDS];
-		texts[USER_ID] = "User id";
-		fields = new JTextField[NBR_FIELDS];
-		fields[USER_ID] = new JTextField(20);
-		//test
+	public JComponent createBottomPanel() {		
 		JButton[] buttons = new JButton[1];
-		buttons[0] = new JButton("Login");
+		buttons[0] = new JButton("Search");
 		ActionHandler actHand = new ActionHandler();
-		fields[USER_ID].addActionListener(actHand);
 		return new ButtonAndMessagePanel(buttons, messageLabel, actHand);
 	}
 	
@@ -121,7 +114,7 @@ public class UserLoginPane extends BasicPane{
 	    JPanel p=new JPanel();
 	    p.setLayout(new GridLayout(2, 1));
 	    JPanel comboBoxPane = new JPanel(); //use FlowLayout
-        String comboBoxItems[] = { CHOOSEPANEL, TEXTPANEL };
+        String comboBoxItems[] = { CHOOSEPANEL, TEXTPANEL, CALENDERPANEL, ALLPANEL};
         JComboBox cb = new JComboBox(comboBoxItems);
         cb.setEditable(false);
         cb.addItemListener(new ItemHandler());
@@ -130,22 +123,32 @@ public class UserLoginPane extends BasicPane{
         //Create the "cards".
         JPanel card1 = new JPanel();
       
-        
         JPanel card2 = new JPanel();
         card2.setLayout(new GridLayout(2, 1));
         JTextField text=new JTextField("Please enter the pallet number");
         text.setEditable(false);
         card2.add(text);
         card2.add(new JTextField("", 20));
+       
+        JPanel card3=new JPanel();
+        UtilDateModel model = new UtilDateModel();
+        JDatePanelImpl datePanel = new JDatePanelImpl(model);
+        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
+        card3.add(datePicker);
         
-        JButton searchButton = new JButton("Search");
-        card2.add(searchButton);
+        JPanel card4=new JPanel();
+        JTextField text1=new JTextField("Search for all pallets by clicking search");
+        text1.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        text1.setEditable(false);
+        card4.add(text1);
         
         //Create the panel that contains the "cards".
         chosenPanel = new JPanel(new CardLayout());
         chosenPanel.add(card1, CHOOSEPANEL);
         chosenPanel.add(card2, TEXTPANEL);
-        //p.setLayout(new GridLayout(2, 1));
+        chosenPanel.add(card3,CALENDERPANEL);
+        chosenPanel.add(card4,ALLPANEL);
+        
         p.add(comboBoxPane, BorderLayout.PAGE_START);
         p.add(chosenPanel, BorderLayout.CENTER);
 		//test
@@ -162,6 +165,7 @@ public class UserLoginPane extends BasicPane{
 	/**
 	 * A class which listens for button clicks.
 	 */
+	//Denna sköter searchknappen
 	class ActionHandler implements ActionListener {
 		/**
 		 * Called when the user clicks the login button. Checks with the
@@ -172,11 +176,12 @@ public class UserLoginPane extends BasicPane{
 		 *            The event object (not used).
 		 */
 		public void actionPerformed(ActionEvent e) {
-			String userId = fields[USER_ID].getText();
+			//Måste hämta från fälden här
 			/* --- insert own code here --- */
 		}
 	}
 	
+	//Denna klassen hanterar de olika valen i fönstret
 	class ItemHandler implements ItemListener {
 
 		@Override
@@ -188,25 +193,32 @@ public class UserLoginPane extends BasicPane{
 		
 	}
 	
-	/**
-	 * A class that listens for clicks in the name list.
-	 */
-	class NameSelectionListener implements ListSelectionListener {
-		/**
-		 * Called when the user selects a name in the name list. Fetches
-		 * performance dates from the database and displays them in the date
-		 * list.
-		 * 
-		 * @param e
-		 *            The selected list item.
-		 */
-		public void valueChanged(ListSelectionEvent e) {
-			if (cookieList.isSelectionEmpty()) {
-				return;
+	//Hanterar både block och unblock
+	class BlockActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			JButton clicked=(JButton) e.getSource();
+			if(clicked.getText().equals("Blocked")){
+				System.out.println("bloced");
+			} else {
+				System.out.println("unblocked");
 			}
-			String cookieName = cookieList.getSelectedValue();
-			/* --- insert own code here --- */
+			
 		}
+		
+	}
+	
+	//Hanterar detailsknappen
+	class DetailActionListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new PalletDetailGUI();
+			
+		}
+		
 	}
 	
 }

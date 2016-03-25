@@ -80,9 +80,9 @@ public class ProductionPane extends BasicPane {
 		JScrollPane p1 = new JScrollPane(cookieList);
 
 		JPanel p = new JPanel();
-		p.setLayout(new GridLayout(1, 1));
+		p.setLayout(new ViewportLayout());
 		p.add(p1);
-		return p;
+		return p1;
 	}
 
 	/**
@@ -160,6 +160,7 @@ public class ProductionPane extends BasicPane {
 	/**
 	 * A class that listens for clicks in the name list.
 	 */
+	//kanske kan tas bort. vet inte om vi behöver denna
 	class NameSelectionListener implements ListSelectionListener {
 		/**
 		 * Called when the user selects a name in the name list. Fetches

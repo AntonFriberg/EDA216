@@ -31,7 +31,7 @@ public class PalletDetailGUI extends JFrame {
 			add(new JTextField());
 		}
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 		setVisible(true);
 	}

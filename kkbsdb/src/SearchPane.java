@@ -10,6 +10,7 @@ import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -25,25 +26,19 @@ import java.util.Properties;
 public class SearchPane extends BasicPane{
 	private static final long serialVersionUID = 1;
 
-	/**
-	 * A label showing the name of the current user.
-	 */
-	private JLabel chosenCookieNameLabel;
 
 	/**
 	 * The list model for the movie name list.
 	 */
+	//måste döpas om, kanske om man orkar fixa en modell-klass
 	private DefaultListModel<String> cookieListModel;
 
 	/**
 	 * The movie name list.
 	 */
+	//samma som ovan
 	private JList<String> cookieList;
 
-	/**
-	 * The number of the movie name field.
-	 */
-	private static final int PALLET_NBR = 0;
 
 	private JPanel chosenPanel;
 	public SearchPane(Database db) {
@@ -91,7 +86,6 @@ public class SearchPane extends BasicPane{
 		cookieList = new JList<String>(cookieListModel);
 		cookieList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		cookieList.setPrototypeCellValue("123456789012");
-		cookieList.addListSelectionListener(new NameSelectionListener());
 		JScrollPane p2 = new JScrollPane(cookieList);
 		p.add(p2);
 		return p;
@@ -123,8 +117,10 @@ public class SearchPane extends BasicPane{
         
         //Create the "cards".
         JPanel card1 = new JPanel();
+        card1.setName("Empty");
       
         JPanel card2 = new JPanel();
+        card2.setName("Number");
         card2.setLayout(new GridLayout(2, 1));
         JTextField text=new JTextField("Please enter the pallet number");
         text.setEditable(false);
@@ -132,12 +128,14 @@ public class SearchPane extends BasicPane{
         card2.add(new JTextField("", 20));
        
         JPanel card3=new JPanel();
+        card3.setName("Date");
         UtilDateModel model = new UtilDateModel();
         JDatePanelImpl datePanel = new JDatePanelImpl(model);
         JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
         card3.add(datePicker);
         
         JPanel card4=new JPanel();
+        card4.setName("All");
         JTextField text1=new JTextField("Search for all pallets by clicking search");
         text1.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         text1.setEditable(false);
@@ -178,13 +176,30 @@ public class SearchPane extends BasicPane{
 		 */
 		public void actionPerformed(ActionEvent e) {
 			//Måste hämta från fälden här
+			JPanel card = null;
+			for (Component comp : chosenPanel.getComponents()) {
+			    if (comp.isVisible() == true) {
+			        card = (JPanel) comp;
+			    }
+			}
+			if(card.getName().equals("Date")){
+				Date date=(Date)((JDatePickerImpl)card.getComponent(0)).getModel().getValue();
+				System.out.println(date.toString());
+			} else
+			//Hämtar textfältet när man söker efter numret
+			if(card.getName().equals("Number")){
+				((JTextField) card.getComponent(1)).getText();
+				System.out.println(((JTextField) card.getComponent(1)).getText());
+			} else
+			if(card.getName().equals("All")){
+				
+			}
 			/* --- insert own code here --- */
 		}
 	}
 	
-	//Denna klassen hanterar de olika valen i fönstret
+	//Denna klassen hanterar de olika korten
 	class ItemHandler implements ItemListener {
-
 		@Override
 		public void itemStateChanged(ItemEvent e) {
 			// TODO Auto-generated method stub
@@ -194,32 +209,23 @@ public class SearchPane extends BasicPane{
 		
 	}
 	
-	/**
-	 * A class that listens for clicks in the name list.
-	 */
-	class NameSelectionListener implements ListSelectionListener {
-		/**
-		 * Called when the user selects a name in the name list. Fetches
-		 * performance dates from the database and displays them in the date
-		 * list.
-		 * 
-		 * @param e
-		 *            The selected list item.
-		 */
-		public void valueChanged(ListSelectionEvent e) {
-			if (cookieList.isSelectionEmpty()) {
-				return;
-			}
-			String cookieName = cookieList.getSelectedValue();
-			/* --- insert own code here --- */
-		}
-	}
 	//Hanterar både block och unblock
 	class BlockActionListener implements ActionListener {
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
+		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
+			/*
+			if (cookieList.isSelectionEmpty()) {
+				return;
+			}
+			JList<String> selectedValues= (JList<String>) cookieList.getSelectedValuesList();*/
+			JButton clicked=(JButton) e.getSource();
+			if(clicked.getText().equals("Block")){
+				System.out.println("bloced");
+			} else {
+				System.out.println("unblocked");
+			}
 			
 		}
 		
@@ -227,9 +233,14 @@ public class SearchPane extends BasicPane{
 	
 	//Hanterar detailsknappen
 	class DetailActionListener implements ActionListener{
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			/**
+			if (cookieList.isSelectionEmpty()) {
+				return;
+			}
+			JList<String> selectedValues= (JList<String>) cookieList.getSelectedValuesList();
+			*/
 			new PalletDetailGUI();
 			
 		}

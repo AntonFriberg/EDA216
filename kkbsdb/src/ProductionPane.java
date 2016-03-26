@@ -145,6 +145,8 @@ public class ProductionPane extends BasicPane {
 	private void fillNameList() {
 		cookieListModel.removeAllElements();
 		/* --- insert own code here --- */
+		db.getCookieNames(cookieListModel);
+		cookieList.setModel(cookieListModel);
 	}
 
 	/**
@@ -159,7 +161,7 @@ public class ProductionPane extends BasicPane {
 	/**
 	 * A class that listens for clicks in the name list.
 	 */
-	//kanske kan tas bort. vet inte om vi behöver denna
+	// kanske kan tas bort. vet inte om vi behöver denna
 	class NameSelectionListener implements ListSelectionListener {
 		/**
 		 * Called when the user selects a name in the name list. Fetches
@@ -173,9 +175,11 @@ public class ProductionPane extends BasicPane {
 			if (cookieList.isSelectionEmpty()) {
 				return;
 			}
-			String cookieName = cookieList.getSelectedValue();
-			chosenCookieNameLabel = new JLabel(cookieList.getSelectedValue());
-			/* --- insert own code here --- */
+			if (!e.getValueIsAdjusting()) {
+				String cookieName = cookieList.getSelectedValue().toString();
+				/* --- insert own code here --- */
+				chosenCookieNameLabel.setText(cookieName);
+			}
 		}
 	}
 

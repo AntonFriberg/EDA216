@@ -1,6 +1,8 @@
 
 import java.sql.*;
 
+import javax.swing.DefaultListModel;
+
 /**
  * Database is a class that specifies the interface to the movie database. Uses
  * JDBC and the MySQL Connector/J driver.
@@ -67,6 +69,24 @@ public class Database {
 		return conn != null;
 	}
 
+
 	/* --- insert own code here --- */
+	
+	public void getCookieNames(DefaultListModel<String> cookieListModel) {
+		if (isConnected()) {
+			try {
+				Statement execStat = conn.createStatement();
+				ResultSet cookieName = execStat.executeQuery("SELECT cookiename FROM Cookie");
+				while (cookieName.next()) {
+					cookieListModel.addElement(cookieName.getString(1));
+				}
+				cookieName.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(e);
+			}
+		}
+	}
 
 }

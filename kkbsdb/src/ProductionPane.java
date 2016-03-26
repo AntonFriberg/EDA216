@@ -161,7 +161,6 @@ public class ProductionPane extends BasicPane {
 	/**
 	 * A class that listens for clicks in the name list.
 	 */
-	// kanske kan tas bort. vet inte om vi behöver denna
 	class NameSelectionListener implements ListSelectionListener {
 		/**
 		 * Called when the user selects a name in the name list. Fetches

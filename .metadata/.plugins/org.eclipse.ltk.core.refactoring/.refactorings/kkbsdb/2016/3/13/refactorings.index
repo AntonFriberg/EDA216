@@ -1,3 +1,7 @@
 1459234801040	Rename type 'Pallet'
 1459236339791	Rename local variable 'userLoginPane'
 1459236348416	Rename local variable 'bookingPane'
+1459260386176	Rename local variable 'startDate'
+1459260398759	Rename local variable 'df'
+1459260408318	Rename local variable 'df'
+1459260421387	Rename local variable 'startDF'

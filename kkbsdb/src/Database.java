@@ -160,4 +160,69 @@ public class Database {
 		}
 	}
 
+	public void searchById(String id, ArrayList<Pallet> pallets) {
+		try {
+			PreparedStatement execStat=conn.prepareStatement("SELECT * FROM PALLET WHERE palletnbr=?");
+			execStat.setString(1, id);
+			ResultSet result=execStat.executeQuery();
+			while(result.next()){
+				int iD=result.getInt(1);
+				String name=result.getString(2);
+				String date=result.getString(3);
+				String c=result.getString(4);
+				String loc=result.getString(5);
+				int billId=result.getInt(6);
+				pallets.add(new Pallet(iD,name,loc,date,false,null));
+			}
+			result.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void searchByDate(String startDateFormatted, ArrayList<Pallet> pallets) {
+		try {
+			PreparedStatement execStat=conn.prepareStatement("SELECT * FROM PALLET WHERE bakedate LIKE ? ORDER BY bakedate");
+			execStat.setString(1, startDateFormatted+"%");
+			ResultSet result=execStat.executeQuery();
+			while(result.next()){
+				int iD=result.getInt(1);
+				String name=result.getString(2);
+				String date=result.getString(3);
+				String c=result.getString(4);
+				String loc=result.getString(5);
+				int billId=result.getInt(6);
+				pallets.add(new Pallet(iD,name,loc,date,false,null));
+			}
+			result.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void searchByDate(String startDateFormatted, String endDateFormatted, ArrayList<Pallet> pallets) {
+		try {
+			PreparedStatement execStat=conn.prepareStatement("SELECT * FROM PALLET WHERE bakedate >= ? AND bakedate <=? ORDER BY bakedate");
+			execStat.setString(1, startDateFormatted+" 00:00:00");
+			execStat.setString(2, endDateFormatted+" 23:59:59");
+			ResultSet result=execStat.executeQuery();
+			while(result.next()){
+				int iD=result.getInt(1);
+				String name=result.getString(2);
+				String date=result.getString(3);
+				String c=result.getString(4);
+				String loc=result.getString(5);
+				int billId=result.getInt(6);
+				pallets.add(new Pallet(iD,name,loc,date,false,null));
+			}
+			result.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 }

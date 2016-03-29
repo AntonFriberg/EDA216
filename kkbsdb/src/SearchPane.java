@@ -17,6 +17,7 @@ import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
@@ -27,6 +28,8 @@ import java.util.Properties;
  */
 public class SearchPane extends BasicPane{
 	private static final long serialVersionUID = 1;
+	
+	private ArrayList<Pallet> pallets;
 
 
 	/**
@@ -44,8 +47,8 @@ public class SearchPane extends BasicPane{
 
 	private JPanel chosenPanel;
 	public SearchPane(Database db) {
-		
 		super(db);
+		pallets=new ArrayList<Pallet>();
 
 	}
 
@@ -195,7 +198,13 @@ public class SearchPane extends BasicPane{
 				System.out.println(((JTextField) card.getComponent(1)).getText());
 			} else
 			if(card.getName().equals("All")){
-				
+				cookieListModel.removeAllElements();
+				db.searchByAll(pallets);
+				for(Pallet p:pallets){
+					
+					cookieListModel.addElement(String.format("%1$-"+(15-Integer.toString(p.getPalletNbr()).length())+"s", p.getPalletNbr())+"|"+(p.getBakeDate().split(" "))[0]+"| "+p.getCookieName());
+				}
+				cookieList.setModel(cookieListModel);
 			}
 			/* --- insert own code here --- */
 		}

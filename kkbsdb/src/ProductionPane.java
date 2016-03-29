@@ -221,8 +221,6 @@ public class ProductionPane extends BasicPane {
 			} else {
 				displayMessage("Not connected to the database, please try again.");
 			}
-			
-
 		}
 	}
 }

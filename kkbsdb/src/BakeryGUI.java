@@ -74,14 +74,9 @@ public class BakeryGUI {
 		public void stateChanged(ChangeEvent e) {
 			BasicPane selectedPane = (BasicPane) tabbedPane.getSelectedComponent();
 			selectedPane.entryActions();
-			if (tabbedPane.getSelectedIndex() == 0) {
-				((BasicPane) tabbedPane.getSelectedComponent()).displayMessage("Something");
-				System.out.println("hello");
-			} else {
+			if (tabbedPane.getSelectedIndex() == 1)
 				((BasicPane) tabbedPane.getSelectedComponent())
 						.displayMessage("Please pick the cookie you'd like to produce");
-				;
-			}
 		}
 	}
 

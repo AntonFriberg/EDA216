@@ -1,16 +1,14 @@
-import java.util.Date;
-
 public class Pallet {
 	private int palletNbr;
 	private String cookieName, location, bakeDate;
-	private boolean isBlocked;
+	private String isBlocked;
 	private Bill bill;
 
 	public Pallet() {
 
 	}
 
-	public Pallet(int palletNbr, String cookieName, String location, String bakeDate, boolean isBlocked, Bill bill) {
+	public Pallet(int palletNbr, String cookieName, String location, String bakeDate, String isBlocked, Bill bill) {
 		this.palletNbr = palletNbr;
 		this.cookieName = cookieName;
 		this.location = location;
@@ -51,12 +49,8 @@ public class Pallet {
 		this.bakeDate = bakeDate;
 	}
 
-	public boolean isBlocked() {
+	public String isBlocked() {
 		return isBlocked;
-	}
-
-	public void setBlocked(boolean isBlocked) {
-		this.isBlocked = isBlocked;
 	}
 
 	public Bill getBill() {
@@ -65,5 +59,11 @@ public class Pallet {
 
 	public void setBill(Bill bill) {
 		this.bill = bill;
+	}
+
+	public void setIsBlocked(String blocked) {
+		// TODO Auto-generated method stub
+		isBlocked=blocked;
+		
 	}
 }

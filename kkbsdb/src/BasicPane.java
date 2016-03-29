@@ -1,8 +1,12 @@
 
-import javax.swing.*;
-import javax.swing.border.*;
+import java.awt.BorderLayout;
 
-import java.awt.*;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.SoftBevelBorder;
 
 /**
  * BasicPane is a pane in the user interface. It consists of two subpanels: the

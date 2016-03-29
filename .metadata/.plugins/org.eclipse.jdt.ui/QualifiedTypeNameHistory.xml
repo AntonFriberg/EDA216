@@ -10,7 +10,6 @@
 <fullyQualifiedTypeName name="net.sourceforge.jdatepicker.impl.JDatePanelImpl"/>
 <fullyQualifiedTypeName name="net.sourceforge.jdatepicker.impl.UtilDateModel"/>
 <fullyQualifiedTypeName name="net.sourceforge.jdatepicker.impl.JDatePickerImpl"/>
-<fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="java.util.Calendar"/>
 <fullyQualifiedTypeName name="java.awt.GridBagLayout"/>
 <fullyQualifiedTypeName name="SearchPane.DetailActionListener"/>
@@ -22,4 +21,6 @@
 <fullyQualifiedTypeName name="javax.swing.JTextField"/>
 <fullyQualifiedTypeName name="java.awt.Dimension"/>
 <fullyQualifiedTypeName name="java.awt.Component"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="ProductionPane"/>
 </qualifiedTypeNameHistroy>

@@ -1,0 +1,20 @@
+import java.util.Date;
+
+public class Pallet {
+	private int billId;
+	private String custName,custAddr;
+	private char isDel;
+	private Date date;
+	
+	public Pallet(){
+	
+	}
+	
+	public Pallet(int billId, Date date, char isDel, String custName,String custAddr){
+		this.billId=billId;
+		this.date=date;
+		this.isDel=isDel;
+		this.custName=custName;
+		this.custAddr=custAddr;
+	}
+}

@@ -1,3 +1,5 @@
+//såhär skriver man för att skriva ut meddelanden i understa panelen.
+//displayMessage("Pallet was succesfully blocked!");
 
 import javax.swing.*;
 import javax.swing.event.*;

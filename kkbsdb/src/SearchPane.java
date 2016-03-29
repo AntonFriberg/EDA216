@@ -1,4 +1,6 @@
 //http://www.codejava.net/java-se/swing/how-to-use-jdatepicker-to-display-calendar-component
+//såhär skriver man för att skriva ut meddelanden i understa panelen.
+//displayMessage("Pallet was succesfully blocked!");
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -110,7 +112,7 @@ public class SearchPane extends BasicPane{
 	    p.setLayout(new GridLayout(2, 1));
 	    JPanel comboBoxPane = new JPanel(); //use FlowLayout
         String comboBoxItems[] = { CHOOSEPANEL, TEXTPANEL, CALENDERPANEL, ALLPANEL};
-        JComboBox cb = new JComboBox(comboBoxItems);
+        JComboBox<String> cb = new JComboBox<String>(comboBoxItems);
         cb.setEditable(false);
         cb.addItemListener(new ItemHandler());
         comboBoxPane.add(cb);
@@ -222,7 +224,9 @@ public class SearchPane extends BasicPane{
 			JList<String> selectedValues= (JList<String>) cookieList.getSelectedValuesList();*/
 			JButton clicked=(JButton) e.getSource();
 			if(clicked.getText().equals("Block")){
-				System.out.println("bloced");
+				System.out.println("blocked");
+				//såhär skriver man för att skriva ut meddelanden i understa panelen.
+				displayMessage("Pallet was succesfully blocked!");
 			} else {
 				System.out.println("unblocked");
 			}

@@ -33,11 +33,11 @@ public class BakeryGUI {
 		JFrame frame = new JFrame("Cookie baking");
 		tabbedPane = new JTabbedPane();
 
-		SearchPane userLoginPane = new SearchPane(db);
-		tabbedPane.addTab("Pallet search", null, userLoginPane, "Used to search for one or more pallets");
+		SearchPane searchPane = new SearchPane(db);
+		tabbedPane.addTab("Pallet search", null, searchPane, "Used to search for one or more pallets");
 
-		ProductionPane bookingPane = new ProductionPane(db);
-		tabbedPane.addTab("Add pallet", null, bookingPane, "Add a produced pallet to the db");
+		ProductionPane prodPane = new ProductionPane(db);
+		tabbedPane.addTab("Add pallet", null, prodPane, "Add a produced pallet to the db");
 
 		tabbedPane.setSelectedIndex(0);
 
@@ -49,14 +49,14 @@ public class BakeryGUI {
 		frame.setSize(500, 400);
 		frame.setVisible(true);
 
-		userLoginPane.displayMessage("Connecting to database ...");
+		searchPane.displayMessage("Connecting to database ...");
 
 		/* --- change code here --- */
 		/* --- change xxx to your user name, yyy to your password --- */
 		if (db.openConnection("db01", "dinmamma1")) {
-			userLoginPane.displayMessage("Connected to database");
+			searchPane.displayMessage("Connected to database");
 		} else {
-			userLoginPane.displayMessage("Could not connect to database");
+			searchPane.displayMessage("Could not connect to database");
 		}
 	}
 
@@ -74,6 +74,14 @@ public class BakeryGUI {
 		public void stateChanged(ChangeEvent e) {
 			BasicPane selectedPane = (BasicPane) tabbedPane.getSelectedComponent();
 			selectedPane.entryActions();
+			if (tabbedPane.getSelectedIndex() == 0) {
+				((BasicPane) tabbedPane.getSelectedComponent()).displayMessage("Something");
+				System.out.println("hello");
+			} else {
+				((BasicPane) tabbedPane.getSelectedComponent())
+						.displayMessage("Please pick the cookie you'd like to produce");
+				;
+			}
 		}
 	}
 

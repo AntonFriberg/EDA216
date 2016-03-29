@@ -62,14 +62,8 @@ public class Pallet {
 	}
 
 	public void setIsBlocked(String blocked) {
+		// TODO Auto-generated method stub
 		isBlocked=blocked;
-	}
-	
-	public String toString(){
-		String format = "%1$-5d %2$-10s %3$-18s";
-		String blocked = isBlocked() != null ? "Y" : "N";
-		return String.format(format, palletNbr,
-				"| " + (bakeDate.split(" "))[0], "| " + cookieName) + "| " + blocked;
 		
 	}
 }

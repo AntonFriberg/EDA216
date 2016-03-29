@@ -5,3 +5,5 @@
 1459260398759	Rename local variable 'df'
 1459260408318	Rename local variable 'df'
 1459260421387	Rename local variable 'startDF'
+1459290404821	Rename field 'cookieListModel'
+1459290415189	Rename field 'cookieList'

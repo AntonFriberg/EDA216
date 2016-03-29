@@ -129,7 +129,7 @@ public class Database {
 		return new Pallet(id, cookieName, "", date, null, null);
 	}
 
-	private ArrayList<Pallet> execPrepPalSearchQuery(String q, ArrayList<String> input, int unknowns) {
+	private ArrayList<Pallet> execPrepPalSearchQuery(String q,DefaultListModel<Pallet> cookieListModel, ArrayList<String> input, int unknowns) {
 		ArrayList<Pallet> pallets = new ArrayList<Pallet>();
 		try {
 			PreparedStatement execStat = conn.prepareStatement(q);
@@ -144,7 +144,7 @@ public class Database {
 				String isBlocked = result.getString(4);
 				String loc = result.getString(5);
 				int billId = result.getInt(6);
-				pallets.add(new Pallet(iD, name, loc, date, isBlocked, null));
+				cookieListModel.addElement(new Pallet(iD, name, loc, date, isBlocked, null));
 			}
 			result.close();
 		} catch (SQLException e) {
@@ -154,31 +154,31 @@ public class Database {
 		return pallets;
 	}
 
-	public void searchByAll(ArrayList<Pallet> pallets) {
-		pallets.addAll(execPrepPalSearchQuery("SELECT * FROM pallet;", null, 0));
+	public void searchByAll(DefaultListModel<Pallet> cookieListModel) {
+		execPrepPalSearchQuery("SELECT * FROM pallet;",cookieListModel, null, 0);
 	}
 
-	public void searchById(String id, ArrayList<Pallet> pallets) {
+	public void searchById(String id, DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(id);
 		String q = "SELECT * FROM PALLET WHERE palletnbr=?";
-		pallets.addAll(execPrepPalSearchQuery(q, input, input.size()));
+		execPrepPalSearchQuery(q,cookieListModel, input, input.size());
 
 	}
 
-	public void searchByDate(String startDateFormatted, ArrayList<Pallet> pallets) {
+	public void searchByDate(String startDateFormatted, DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(startDateFormatted+"%");
 		String q = "SELECT * FROM PALLET WHERE bakedate LIKE ? ORDER BY bakedate";
-		pallets.addAll(execPrepPalSearchQuery(q, input, input.size()));
+		execPrepPalSearchQuery(q,cookieListModel, input, input.size());
 	}
 
-	public void searchByDate(String startDateFormatted, String endDateFormatted, ArrayList<Pallet> pallets) {
+	public void searchByDate(String startDateFormatted, String endDateFormatted, DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(startDateFormatted + " 00:00:00");
 		input.add(endDateFormatted + " 23:59:59");
 		String q = "SELECT * FROM PALLET WHERE bakedate >= ? AND bakedate <=? ORDER BY bakedate";
-		pallets.addAll(execPrepPalSearchQuery(q, input, input.size()));
+		execPrepPalSearchQuery(q,cookieListModel, input, input.size());
 	}
 
 	public void blockPallet(String selectedValues,String change) {

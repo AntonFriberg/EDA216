@@ -3,29 +3,35 @@
 //såhär skriver man för att skriva ut meddelanden i understa panelen.
 //displayMessage("Pallet was succesfully blocked!");
 
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
-import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
-import net.sourceforge.jdatepicker.impl.UtilDateModel;
-
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Properties;
+import java.util.List;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+
+import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
+import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
+import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
 /**
  * The GUI pane where a new user logs in. Contains a text field where the user
@@ -40,13 +46,13 @@ public class SearchPane extends BasicPane {
 	 * The list model for the movie name list.
 	 */
 	// måste döpas om, kanske om man orkar fixa en modell-klass
-	private DefaultListModel<String> cookieListModel;
+	private DefaultListModel<Pallet> cookieListModel;
 
 	/**
 	 * The movie name list.
 	 */
 	// samma som ovan
-	private JList<String> cookieList;
+	private JList<Pallet> cookieList;
 
 	private JPanel chosenPanel;
 
@@ -91,10 +97,10 @@ public class SearchPane extends BasicPane {
 	public JComponent createMiddlePanel() {
 		JPanel p = new JPanel();
 		p.setLayout(new GridLayout(1, 1));
-		cookieListModel = new DefaultListModel<String>();
-		cookieList = new JList<String>(cookieListModel);
+		cookieListModel = new DefaultListModel<Pallet>();
+		cookieList = new JList<Pallet>(cookieListModel);
 		cookieList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		cookieList.setPrototypeCellValue("123456789012");
+		//cookieList.setPrototypeCellValue("123456789012");
 		cookieList.setFont(new Font("MONOSPACED", Font.PLAIN, 14));
 		JScrollPane p2 = new JScrollPane(cookieList);
 		p2.setPreferredSize(new Dimension(340, 0));
@@ -202,7 +208,6 @@ public class SearchPane extends BasicPane {
 		 */
 		public void actionPerformed(ActionEvent e) {
 			// Måste hämta från fälden här
-
 			entryActions();
 			JPanel card = null;
 			for (Component comp : chosenPanel.getComponents()) {
@@ -223,30 +228,31 @@ public class SearchPane extends BasicPane {
 				Date endDate = (Date) ((JDatePickerImpl) card.getComponent(3)).getModel().getValue();
 				if (endDate != null) {
 					String endDateFormatted = df.format(endDate);
-					db.searchByDate(startDateFormatted, endDateFormatted, pallets);
+					db.searchByDate(startDateFormatted, endDateFormatted, cookieListModel);
 				} else {
 					// Här hanterar vi om man bara söker på ett datum.
-					db.searchByDate(startDateFormatted, pallets);
+					db.searchByDate(startDateFormatted, cookieListModel);
 				}
 
 			} else
 			// Hämtar textfältet när man söker efter numret
 			if (card.getName().equals("Number")) {
 				JTextField input = (JTextField) card.getComponent(1);
-				db.searchById(input.getText(), pallets);
+				db.searchById(input.getText(), cookieListModel);
 				input.setText("");
 			} else if (card.getName().equals("All")) {
-				db.searchByAll(pallets);
+				db.searchByAll(cookieListModel);
 
 			}
 			/* --- insert own code here --- */
-			for (Pallet p : pallets) {
+			for (Pallet p : pallets) {/*
 				String format = "%1$-5d %2$-10s %3$-18s";
+				String blocked = p.isBlocked() != null ? "Y" : "N";
 				cookieListModel.addElement(String.format(format, p.getPalletNbr(),
-						"| " + (p.getBakeDate().split(" "))[0], "| " + p.getCookieName()) + "| "+p.isBlocked()!=null?"Y":"N");
+						"| " + (p.getBakeDate().split(" "))[0], "| " + p.getCookieName()) + "| " + blocked);
+				*/
+				cookieListModel.addElement(p);
 			}
-			// ((CardLayout)chosenPanel.getLayout()).show(chosenPanel, "Please
-			// choose searching method");
 			displayMessage("The search result is on the form \"Pallet ID | Production date | "
 					+ "Cookie name | Blocked Y/N? \"");
 			cookieList.setModel(cookieListModel);
@@ -270,28 +276,49 @@ public class SearchPane extends BasicPane {
 
 	// Hanterar både block och unblock
 	class BlockActionListener implements ActionListener {
-
 		@Override
+		//Detta funkar, men knappas effektivt. Det kanske går att göra model<pallet>
+		//och sen en toString metod i pallet som automatiskt anropas? Värt å testa kanske
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			if (cookieList.isSelectionEmpty()) {
 				return;
 			}
-			ArrayList<String> selectedValues = (ArrayList<String>) cookieList.getSelectedValuesList();
+			List<Pallet> selectedValues = (List<Pallet>) cookieList.getSelectedValuesList();
 			JButton clicked = (JButton) e.getSource();
-			for(String s:selectedValues){
-				s=s.split("|")[0].trim();
-			}
+			int[] selIndexes=cookieList.getSelectedIndices();
 			if (clicked.getText().equals("Block")) {
-				db.blockPallet(selectedValues,pallets," ");
-				System.out.println("blocked");
+				for (Pallet s : selectedValues) {
+					//db.blockPallet(s.split("|")[0].trim(), " ");
+					db.blockPallet(Integer.toString(s.getPalletNbr()), " ");
+					for(int i=0;i<selIndexes.length;i++){
+						pallets.get(selIndexes[i]).setIsBlocked(" ");
+					}
+				}
 			} else {
-				db.blockPallet(selectedValues, pallets, null);
-				System.out.println("unblocked");
+				for (Pallet s : selectedValues) {
+					//db.blockPallet(s.split("|")[0].trim(), null);
+					db.blockPallet(Integer.toString(s.getPalletNbr()), " ");
+					for(int i=0;i<selIndexes.length;i++){
+						pallets.get(selIndexes[i]).setIsBlocked(null);
+					}
+				}
 			}
-
+			cookieListModel.removeAllElements();
+			for (Pallet p : pallets) {
+				/*
+				String format = "%1$-5d %2$-10s %3$-18s";
+				String blocked = p.isBlocked() != null ? "Y" : "N";
+				cookieListModel.addElement(String.format(format, p.getPalletNbr(),
+						"| " + (p.getBakeDate().split(" "))[0], "| " + p.getCookieName()) + "| " + blocked);
+				
+			 */
+				cookieListModel.addElement(p);
+			}		
+			displayMessage("The search result is on the form \"Pallet ID | Production date | "
+					+ "Cookie name | Blocked Y/N? \"");
+			cookieList.setModel(cookieListModel);
 		}
-
 	}
 
 	// Hanterar detailsknappen

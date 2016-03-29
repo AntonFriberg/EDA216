@@ -16,4 +16,4 @@ FROM Pallet WHERE palletNbr like @search
               OR bakeDate like @search
               OR isBlocked like @search
               OR location like @search
-              OR billId like @search
+              OR billId like @search;

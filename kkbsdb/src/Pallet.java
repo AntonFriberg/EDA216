@@ -2,17 +2,15 @@ import java.util.Date;
 
 public class Pallet {
 	private int palletNbr;
-	private String cookieName,location;
-	private Date bakeDate;
-	private char isBlocked;
+	private String cookieName, location, bakeDate;
+	private boolean isBlocked;
 	private Bill bill;
-	
-	public Pallet(){
-		
+
+	public Pallet() {
+
 	}
 
-	public Pallet(int palletNbr, String cookieName, String location, Date bakeDate, char isBlocked, Bill bill) {
-		super();
+	public Pallet(int palletNbr, String cookieName, String location, String bakeDate, boolean isBlocked, Bill bill) {
 		this.palletNbr = palletNbr;
 		this.cookieName = cookieName;
 		this.location = location;
@@ -45,19 +43,19 @@ public class Pallet {
 		this.location = location;
 	}
 
-	public Date getBakeDate() {
+	public String getBakeDate() {
 		return bakeDate;
 	}
 
-	public void setBakeDate(Date bakeDate) {
+	public void setBakeDate(String bakeDate) {
 		this.bakeDate = bakeDate;
 	}
 
-	public char getIsBlocked() {
+	public boolean isBlocked() {
 		return isBlocked;
 	}
 
-	public void setIsBlocked(char isBlocked) {
+	public void setBlocked(boolean isBlocked) {
 		this.isBlocked = isBlocked;
 	}
 
@@ -68,5 +66,4 @@ public class Pallet {
 	public void setBill(Bill bill) {
 		this.bill = bill;
 	}
-	
 }

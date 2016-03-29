@@ -1,3 +1,4 @@
+
 //såhär skriver man för att skriva ut meddelanden i understa panelen.
 //displayMessage("Pallet was succesfully blocked!");
 
@@ -6,6 +7,9 @@ import javax.swing.event.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * The GUI pane where a user books tickets for movie performances. It contains
@@ -163,6 +167,7 @@ public class ProductionPane extends BasicPane {
 	/**
 	 * A class that listens for clicks in the name list.
 	 */
+	// Denna hanterar klick i listan med kakor
 	class NameSelectionListener implements ListSelectionListener {
 		/**
 		 * Called when the user selects a name in the name list. Fetches
@@ -177,9 +182,13 @@ public class ProductionPane extends BasicPane {
 				return;
 			}
 			if (!e.getValueIsAdjusting()) {
+				clearMessage();
+				clearFields();
+
 				String cookieName = cookieList.getSelectedValue().toString();
 				/* --- insert own code here --- */
 				chosenCookieNameLabel.setText(cookieName);
+				displayMessage("Click 'Produce pallet' in order to save one pallet of " + cookieName);
 			}
 		}
 	}
@@ -187,6 +196,7 @@ public class ProductionPane extends BasicPane {
 	/**
 	 * A class that listens for button clicks.
 	 */
+	// Denna hanterar "produce pallet"-knappen
 	class ActionHandler implements ActionListener {
 		/**
 		 * Called when the user clicks the Book ticket button. Books a ticket
@@ -200,8 +210,19 @@ public class ProductionPane extends BasicPane {
 			if (cookieList.isSelectionEmpty()) {
 				return;
 			}
-			String movieName = cookieList.getSelectedValue();
+			String cookieName = cookieList.getSelectedValue();
 			/* --- insert own code here --- */
+			Pallet prodPal = db.producePallet(cookieName);
+			if (prodPal != null) {
+				fields[0].setText(Integer.toString(prodPal.getPalletNbr()));
+				fields[1].setText((prodPal.getBakeDate().split(" "))[0]);
+				fields[2].setText((prodPal.getBakeDate().split(" "))[1]);
+				displayMessage("Your pallet was succesfully produced.");
+			} else {
+				displayMessage("Not connected to the database, please try again.");
+			}
+			
+
 		}
 	}
 }

@@ -125,6 +125,7 @@ public class SearchPane extends BasicPane{
         card2.setName("Number");
         card2.setLayout(new GridLayout(2, 1));
         JTextField text=new JTextField("Please enter the pallet number");
+        text.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         text.setEditable(false);
         card2.add(text);
         card2.add(new JTextField("", 20));

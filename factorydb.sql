@@ -54,12 +54,12 @@ create table Bill(
   );
 
 create table Pallet(
-  palletNbr integer not null,
+  palletNbr integer not null auto_increment,
   cookieName varchar(40) not null,
-  bakeDate date not null,
+  bakeDate datetime not null,
   isBlocked char(0) default null,
   location varchar(40) not null,
-  billId integer not null,
+  billId integer,
 
   primary key(palletNbr),
   foreign key(cookieName) references Cookie(cookieName),
@@ -174,8 +174,8 @@ create table Pallet(
 
 -- palletNbr, cookieName, billId, bakeDate, isBlocked, location
   insert into Pallet values
-    (1, "Berliner", "2016-03-22", null, "Warehouse", 1),
-    (2, "Berliner", "2016-03-21", null, "Warehouse", 1),
-    (3, "Tango", "2016-03-19", null, "Warehouse", 2),
-    (4, "Amneris", "2016-03-18", null, "Warehouse", 3);
+    (1, "Berliner", "2016-03-22 14:23:11", null, "Warehouse", 1),
+    (2, "Berliner", "2016-03-21 14:23:11", null, "Warehouse", 1),
+    (3, "Tango", "2016-03-19 14:23:11", null, "Warehouse", 2),
+    (4, "Amneris", "2016-03-18 14:23:11", null, "Warehouse", 3);
   commit;

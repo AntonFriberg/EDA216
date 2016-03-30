@@ -94,7 +94,7 @@ public class SearchPane extends BasicPane {
 		palletListModel = new DefaultListModel<Pallet>();
 		palletList = new JList<Pallet>(palletListModel);
 		palletList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		//cookieList.setPrototypeCellValue("123456789012");
+		// cookieList.setPrototypeCellValue("123456789012");
 		palletList.setFont(new Font("MONOSPACED", Font.PLAIN, 14));
 		JScrollPane p2 = new JScrollPane(palletList);
 		p2.setPreferredSize(new Dimension(340, 0));
@@ -275,7 +275,7 @@ public class SearchPane extends BasicPane {
 					db.blockPallet(Integer.toString(s.getPalletNbr()), null);
 					s.setIsBlocked(null);
 				}
-			}		
+			}
 			displayMessage("The search result is on the form \"Pallet ID | Production date | "
 					+ "Cookie name | Blocked Y/N? \"");
 			palletList.setModel(palletListModel);
@@ -286,12 +286,13 @@ public class SearchPane extends BasicPane {
 	class DetailActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			/**
-			 * if (cookieList.isSelectionEmpty()) { return; } JList
-			 * <String> selectedValues= (JList<String>)
-			 * cookieList.getSelectedValuesList();
-			 */
-			new PalletDetailGUI();
+
+			if (palletList.isSelectionEmpty()) {
+				return;
+			}
+			List<Pallet> selectedValues = (List<Pallet>) palletList.getSelectedValuesList();
+
+			new PalletDetailGUI(selectedValues);
 
 		}
 

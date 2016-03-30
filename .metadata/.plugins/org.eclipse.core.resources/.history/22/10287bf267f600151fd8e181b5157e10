@@ -12,7 +12,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 public class PalletDetailGUI extends JFrame {
+	private int rows = 5;
+	private int cols = 5;
 
+	private JTextField[][] fields = new JTextField[rows][cols];
+
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
 	public PalletDetailGUI(List<Pallet> selectedValues) {
@@ -37,11 +44,22 @@ public class PalletDetailGUI extends JFrame {
 		table.setFillsViewportHeight(true);
 		
 		table.getColumnModel().getColumn(0).setPreferredWidth(20);
-		table.getColumnModel().getColumn(3).setPreferredWidth(70);
+		table.getColumnModel().getColumn(3).setPreferredWidth(90);
 		
 		JScrollPane pane=new JScrollPane(table);
 		panel.add(pane);
 		add(panel);
+
+		/*
+		 * setLayout(new GridLayout(rows,cols)); setPreferredSize(new
+		 * Dimension(350,200)); fields[0][0]=new JTextField("Något:");
+		 * fields[1][0]=new JTextField("Något:"); fields[2][0]=new
+		 * JTextField("Något:"); fields[3][0]=new JTextField("Något:");
+		 * fields[4][0]=new JTextField("Något:	");
+		 * 
+		 * for(int i=0;i<rows;i++){ fields[i][0].setEditable(false);
+		 * add(fields[i][0]); add(new JTextField()); }
+		 */
 
 		pack();
 		setVisible(true);

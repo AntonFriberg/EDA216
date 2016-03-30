@@ -182,14 +182,12 @@ public class Database {
 	}
 
 	public void blockPallet(String selectedValues,String change) {
-		// TODO Auto-generated method stub
 		try {
 				PreparedStatement execStat = conn.prepareStatement("UPDATE pallet SET isblocked=? WHERE palletnbr=?");
 				execStat.setString(1, change);
 				execStat.setString(2, selectedValues);
 				execStat.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

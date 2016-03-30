@@ -5,23 +5,27 @@ import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class PalletDetailGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
 	public PalletDetailGUI(List<Pallet> selectedValues) {
-		setPreferredSize(new Dimension(800,400));
-		JPanel panel=new JPanel();
+		super("Pallet details");
+		setPreferredSize(new Dimension(800, 400));
+		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
-		
+
 		String[] colNames = { "Pallet Id", "Cookie name", "Location", "Bake date", "Blocked", "Bill Id" };
-		String[][] palletData = new String[selectedValues.size()][6];
+		String[][] palletData = new String[selectedValues.size() < 10 ? 10 : selectedValues.size()][6];
 
 		for (int i = 0; i < selectedValues.size(); i++) {
 			palletData[i][0] = Integer.toString(selectedValues.get(i).getPalletNbr());
@@ -29,17 +33,22 @@ public class PalletDetailGUI extends JFrame {
 			palletData[i][2] = selectedValues.get(i).getLocation();
 			palletData[i][3] = selectedValues.get(i).getBakeDate();
 			palletData[i][4] = selectedValues.get(i).isBlocked() != null ? "Y" : "N";
-			palletData[i][5] = "-";
+			palletData[i][5] = selectedValues.get(i).getBill() != null
+					? Integer.toString(selectedValues.get(i).getBill().getBillId()) : "-";
 			// palletData[i][5]=Integer.toString(palletListModel.getElementAt(i).getBill().getBillId());
 		}
 		JTable table = new JTable(palletData, colNames);
 		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		table.setFillsViewportHeight(true);
-		
+		table.setEnabled(false);
+		DefaultTableCellRenderer stringRenderer = (DefaultTableCellRenderer) table.getDefaultRenderer(String.class);
+		stringRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		table.setDefaultRenderer(String.class, stringRenderer);
+
 		table.getColumnModel().getColumn(0).setPreferredWidth(20);
 		table.getColumnModel().getColumn(3).setPreferredWidth(70);
-		
-		JScrollPane pane=new JScrollPane(table);
+
+		JScrollPane pane = new JScrollPane(table);
 		panel.add(pane);
 		add(panel);
 

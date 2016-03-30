@@ -39,6 +39,10 @@ import net.sourceforge.jdatepicker.impl.UtilDateModel;
  */
 public class SearchPane extends BasicPane {
 	private static final long serialVersionUID = 1;
+	final static String CHOOSEPANEL = "Please choose searching method";
+	final static String TEXTPANEL = "Search by pallet number";
+	final static String CALENDERPANEL = "Search pallet by date";
+	final static String ALLPANEL = "Search all pallets";
 
 	/**
 	 * The list model for the movie name list.
@@ -61,11 +65,6 @@ public class SearchPane extends BasicPane {
 	 * 
 	 * @return The top panel.
 	 */
-	// test
-	final static String CHOOSEPANEL = "Please choose searching method";
-	final static String TEXTPANEL = "Search by pallet number";
-	final static String CALENDERPANEL = "Search pallet by date";
-	final static String ALLPANEL = "Search all pallets";
 
 	public JComponent createTopPanel() {
 		JPanel p1 = new JPanel();
@@ -94,7 +93,6 @@ public class SearchPane extends BasicPane {
 		palletListModel = new DefaultListModel<Pallet>();
 		palletList = new JList<Pallet>(palletListModel);
 		palletList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		// cookieList.setPrototypeCellValue("123456789012");
 		palletList.setFont(new Font("MONOSPACED", Font.PLAIN, 14));
 		JScrollPane p2 = new JScrollPane(palletList);
 		p2.setPreferredSize(new Dimension(340, 0));
@@ -118,14 +116,13 @@ public class SearchPane extends BasicPane {
 	public JComponent createLeftPanel() {
 		JPanel p = new JPanel();
 		p.setLayout(new GridLayout(2, 1));
-		JPanel comboBoxPane = new JPanel(); // use FlowLayout
+		JPanel comboBoxPane = new JPanel();
 		String comboBoxItems[] = { CHOOSEPANEL, TEXTPANEL, CALENDERPANEL, ALLPANEL };
 		JComboBox<String> cb = new JComboBox<String>(comboBoxItems);
 		cb.setEditable(false);
 		cb.addItemListener(new ItemHandler());
 		comboBoxPane.add(cb);
 
-		// Create the "cards".
 		JPanel card1 = new JPanel();
 		card1.setName("Empty");
 
@@ -165,7 +162,6 @@ public class SearchPane extends BasicPane {
 		text1.setEditable(false);
 		card4.add(text1);
 
-		// Create the panel that contains the "cards".
 		chosenPanel = new JPanel(new CardLayout());
 		chosenPanel.add(card1, CHOOSEPANEL);
 		chosenPanel.add(card2, TEXTPANEL);
@@ -174,7 +170,6 @@ public class SearchPane extends BasicPane {
 
 		p.add(comboBoxPane, BorderLayout.PAGE_START);
 		p.add(chosenPanel, BorderLayout.CENTER);
-		// test
 		return p;
 	}
 
@@ -200,7 +195,6 @@ public class SearchPane extends BasicPane {
 		 *            The event object (not used).
 		 */
 		public void actionPerformed(ActionEvent e) {
-			// Måste hämta från fälden här
 			entryActions();
 			JPanel card = null;
 			for (Component comp : chosenPanel.getComponents()) {
@@ -237,7 +231,6 @@ public class SearchPane extends BasicPane {
 				db.searchByAll(palletListModel);
 
 			}
-			/* --- insert own code here --- */
 			displayMessage("The search result is on the form \"Pallet ID | Production date | "
 					+ "Cookie name | Blocked Y/N? \"");
 			palletList.setModel(palletListModel);
@@ -252,6 +245,8 @@ public class SearchPane extends BasicPane {
 			c.show(chosenPanel, (String) e.getItem());
 			if (chosenPanel.getComponent(2).isVisible()) {
 				displayMessage("Please choose a starting date or date interval.");
+			} else {
+				displayMessage("Pro tip: You can choose multiple pallets and then press Details/Block/Unblock");
 			}
 		}
 
@@ -261,6 +256,7 @@ public class SearchPane extends BasicPane {
 	class BlockActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (palletList.isSelectionEmpty()) {
+				displayMessage("Please choose pallets before clicking here.");
 				return;
 			}
 			List<Pallet> selectedValues = (List<Pallet>) palletList.getSelectedValuesList();
@@ -288,6 +284,7 @@ public class SearchPane extends BasicPane {
 		public void actionPerformed(ActionEvent e) {
 
 			if (palletList.isSelectionEmpty()) {
+				displayMessage("Please choose pallets before clicking here.");
 				return;
 			}
 			List<Pallet> selectedValues = (List<Pallet>) palletList.getSelectedValuesList();

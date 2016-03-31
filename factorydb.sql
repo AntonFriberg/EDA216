@@ -10,6 +10,7 @@ drop table if exists Customer;
 
 
 set FOREIGN_KEY_CHECKS = 1;
+SET SQL_SAFE_UPDATES=0;
 
 create table Ingredient (
   ingrName varchar(40) not null,
@@ -101,25 +102,25 @@ create table Pallet(
 
   -- Name, saldo, lastDel,delAmount
   insert into Ingredient values
-  ("Flour",0,null,null),
-  ("Butter",0,null,null),
-  ("Icing sugar",0,null,null),
-  ("Roasted, chopped nuts",0,null,null),
-  ("Fine-ground nuts",0,null,null),
-  ("Ground, roasted nuts",0,null,null),
-  ("Bread crumbs",0,null,null),
-  ("Sugar",0,null,null),
-  ("Egg whites",0,null,null),
-  ("Chocolate",0,null,null),
-  ("Marzipan",0,null,null),
-  ("Eggs",0,null,null),
-  ("Potato starch",0,null,null),
-  ("Wheat flour",0,null,null),
-  ("Chopped almonds",0,null,null),
-  ("Sodium bicarbonate",0,null,null),
-  ("Vanilla",0,null,null),
-  ("Cinnamon",0,null,null),
-  ("Vanilla sugar",0,null,null);
+  ("Flour",10000,null,null),
+  ("Butter",10000,null,null),
+  ("Icing sugar",10000,null,null),
+  ("Roasted, chopped nuts",10000,null,null),
+  ("Fine-ground nuts",10000,null,null),
+  ("Ground, roasted nuts",10000,null,null),
+  ("Bread crumbs",10000,null,null),
+  ("Sugar",10000,null,null),
+  ("Egg whites",10000,null,null),
+  ("Chocolate",10000,null,null),
+  ("Marzipan",10000,null,null),
+  ("Eggs",10000,null,null),
+  ("Potato starch",10000,null,null),
+  ("Wheat flour",10000,null,null),
+  ("Chopped almonds",10000,null,null),
+  ("Sodium bicarbonate",10000,null,null),
+  ("Vanilla",10000,null,null),
+  ("Cinnamon",10000,null,null),
+  ("Vanilla sugar",10000,null,null);
 
   -- ingrName,cookieName, qty (dl is written as cl)
   insert into Recipe values
@@ -178,4 +179,5 @@ create table Pallet(
     (2, "Berliner", "2016-03-21 14:23:11", null, "Warehouse", 1),
     (3, "Tango", "2016-03-19 14:23:11", null, "Warehouse", 2),
     (4, "Amneris", "2016-03-18 14:23:11", null, "Warehouse", 3);
+    
   commit;

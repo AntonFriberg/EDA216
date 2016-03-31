@@ -112,13 +112,6 @@ public class Database {
 				execStat.setString(3, null);
 				execStat.setString(4, loc);
 				execStat.setString(5, null);
-				PreparedStatement stmt = conn.prepareStatement(
-						"UPDATE ingredient, (SELECT qty,ingrName from recipe where cookieName=?)q SET ingredient.saldo=(ingredient.saldo-q.qty) WHERE ingredient.ingrName = q.ingrName");
-				stmt.setString(1, cookieName);
-				if(stmt.executeUpdate() == 0){
-					//kanske sska skriva typ slut på saldot här
-					return null;
-				}
 				execStat.executeUpdate();
 				ResultSet result = execStat.getGeneratedKeys();
 				while (result.next()) {
@@ -136,13 +129,12 @@ public class Database {
 		return new Pallet(id, cookieName, "", date, null, null);
 	}
 
-	private ArrayList<Pallet> execPrepPalSearchQuery(String q, DefaultListModel<Pallet> cookieListModel,
-			ArrayList<String> input, int unknowns) {
+	private ArrayList<Pallet> execPrepPalSearchQuery(String q,DefaultListModel<Pallet> cookieListModel, ArrayList<String> input, int unknowns) {
 		ArrayList<Pallet> pallets = new ArrayList<Pallet>();
 		try {
 			PreparedStatement execStat = conn.prepareStatement(q);
 			for (int i = 1; i < unknowns + 1; i++) {
-				execStat.setString(i, input.get(i - 1));
+				execStat.setString(i, input.get(i-1));
 			}
 			ResultSet result = execStat.executeQuery();
 			while (result.next()) {
@@ -163,39 +155,38 @@ public class Database {
 	}
 
 	public void searchByAll(DefaultListModel<Pallet> cookieListModel) {
-		execPrepPalSearchQuery("SELECT * FROM pallet;", cookieListModel, null, 0);
+		execPrepPalSearchQuery("SELECT * FROM pallet;",cookieListModel, null, 0);
 	}
 
 	public void searchById(String id, DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(id);
 		String q = "SELECT * FROM PALLET WHERE palletnbr=?";
-		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
+		execPrepPalSearchQuery(q,cookieListModel, input, input.size());
 
 	}
 
 	public void searchByDate(String startDateFormatted, DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
-		input.add(startDateFormatted + "%");
+		input.add(startDateFormatted+"%");
 		String q = "SELECT * FROM PALLET WHERE bakedate LIKE ? ORDER BY bakedate";
-		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
+		execPrepPalSearchQuery(q,cookieListModel, input, input.size());
 	}
 
-	public void searchByDate(String startDateFormatted, String endDateFormatted,
-			DefaultListModel<Pallet> cookieListModel) {
+	public void searchByDate(String startDateFormatted, String endDateFormatted, DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(startDateFormatted + " 00:00:00");
 		input.add(endDateFormatted + " 23:59:59");
 		String q = "SELECT * FROM PALLET WHERE bakedate >= ? AND bakedate <=? ORDER BY bakedate";
-		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
+		execPrepPalSearchQuery(q,cookieListModel, input, input.size());
 	}
 
-	public void blockPallet(String selectedValues, String change) {
+	public void blockPallet(String selectedValues,String change) {
 		try {
-			PreparedStatement execStat = conn.prepareStatement("UPDATE pallet SET isblocked=? WHERE palletnbr=?");
-			execStat.setString(1, change);
-			execStat.setString(2, selectedValues);
-			execStat.executeUpdate();
+				PreparedStatement execStat = conn.prepareStatement("UPDATE pallet SET isblocked=? WHERE palletnbr=?");
+				execStat.setString(1, change);
+				execStat.setString(2, selectedValues);
+				execStat.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

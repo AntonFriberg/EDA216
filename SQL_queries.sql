@@ -17,3 +17,8 @@ FROM Pallet WHERE palletNbr like @search
               OR isBlocked like @search
               OR location like @search
               OR billId like @search;
+			  
+-- Update saldo
+UPDATE ingredient, (SELECT qty,ingrName from recipe where cookieName="Nut Ring")q 
+SET ingredient.saldo=(ingredient.saldo-q.qty) 
+WHERE ingredient.ingrName = q.ingrName;

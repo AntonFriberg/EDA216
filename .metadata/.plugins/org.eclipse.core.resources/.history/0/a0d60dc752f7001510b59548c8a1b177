@@ -97,7 +97,7 @@ public class Database {
 		}
 	}
 
-	public Pallet producePallet(String cookieName) {
+	public void producePallet(String cookieName) {
 		// TODO Auto-generated method stub
 		int id = -1;
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -117,7 +117,7 @@ public class Database {
 				stmt.setString(1, cookieName);
 				if(stmt.executeUpdate() == 0){
 					//kanske sska skriva typ slut på saldot här
-					return null;
+					return ;
 				}
 				execStat.executeUpdate();
 				ResultSet result = execStat.getGeneratedKeys();

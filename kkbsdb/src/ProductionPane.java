@@ -1,5 +1,5 @@
 
-//såhär skriver man för att skriva ut meddelanden i understa panelen.
+//sï¿½hï¿½r skriver man fï¿½r att skriva ut meddelanden i understa panelen.
 //displayMessage("Pallet was succesfully blocked!");
 
 import java.awt.FlowLayout;
@@ -159,7 +159,6 @@ public class ProductionPane extends BasicPane {
 	 */
 	private void fillNameList() {
 		cookieListModel.removeAllElements();
-		/* --- insert own code here --- */
 		db.getCookieNames(cookieListModel);
 		cookieList.setModel(cookieListModel);
 	}

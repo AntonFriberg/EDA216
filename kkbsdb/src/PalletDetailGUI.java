@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.List;
@@ -12,6 +13,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class PalletDetailGUI extends JFrame {
@@ -20,12 +23,14 @@ public class PalletDetailGUI extends JFrame {
 
 	public PalletDetailGUI(List<Pallet> selectedValues) {
 		super("Pallet details");
-		setPreferredSize(new Dimension(800, 400));
+		int windowWidth = 700;
+		int windowHeight = selectedValues.size() < 30 ? 65+selectedValues.size()*15 : 520;
+		setPreferredSize(new Dimension(windowWidth, windowHeight));
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
-		String[] colNames = { "Pallet Id", "Cookie name", "Location", "Bake date", "Blocked", "Bill Id" };
-		String[][] palletData = new String[selectedValues.size() < 10 ? 10 : selectedValues.size()][6];
+		String[] colNames = { "Pallet Id", "Cookie Name", "Location", "Production Date", "Blocked", "Bill Id" };
+		String[][] palletData = new String[selectedValues.size()][6];
 
 		for (int i = 0; i < selectedValues.size(); i++) {
 			palletData[i][0] = Integer.toString(selectedValues.get(i).getPalletNbr());
@@ -37,6 +42,8 @@ public class PalletDetailGUI extends JFrame {
 					? Integer.toString(selectedValues.get(i).getBill().getBillId()) : "-";
 			// palletData[i][5]=Integer.toString(palletListModel.getElementAt(i).getBill().getBillId());
 		}
+		
+		
 		JTable table = new JTable(palletData, colNames);
 		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		table.setFillsViewportHeight(true);
@@ -44,7 +51,11 @@ public class PalletDetailGUI extends JFrame {
 		DefaultTableCellRenderer stringRenderer = (DefaultTableCellRenderer) table.getDefaultRenderer(String.class);
 		stringRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		table.setDefaultRenderer(String.class, stringRenderer);
-
+		UIDefaults defaults = UIManager.getLookAndFeelDefaults();
+		if (defaults.get("Table.alternateRowColor") == null)
+		    defaults.put("Table.alternateRowColor", new Color(224, 224, 224));
+		
+		
 		table.getColumnModel().getColumn(0).setPreferredWidth(20);
 		table.getColumnModel().getColumn(3).setPreferredWidth(70);
 

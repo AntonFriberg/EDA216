@@ -24,7 +24,7 @@ public class PalletDetailGUI extends JFrame {
 	public PalletDetailGUI(List<Pallet> selectedValues) {
 		super("Pallet details");
 		int windowWidth = 700;
-		int windowHeight = selectedValues.size() < 30 ? 65+selectedValues.size()*15 : 520;
+		int windowHeight = selectedValues.size() < 30 ? 70+selectedValues.size()*15 : 530;
 		setPreferredSize(new Dimension(windowWidth, windowHeight));
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());

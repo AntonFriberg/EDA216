@@ -29,7 +29,7 @@ public class PalletDetailGUI extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
-		String[] colNames = { "Pallet Id", "Cookie Name", "Location", "Production Date", "Blocked", "Bill Id" };
+		String[] colNames = { "Pallet Id", "Cookie Name", "Location", "Production Date & Time", "Blocked", "Bill Id" };
 		String[][] palletData = new String[selectedValues.size()][6];
 
 		for (int i = 0; i < selectedValues.size(); i++) {
@@ -57,7 +57,7 @@ public class PalletDetailGUI extends JFrame {
 		
 		
 		table.getColumnModel().getColumn(0).setPreferredWidth(20);
-		table.getColumnModel().getColumn(3).setPreferredWidth(70);
+		table.getColumnModel().getColumn(3).setPreferredWidth(150);
 
 		JScrollPane pane = new JScrollPane(table);
 		panel.add(pane);

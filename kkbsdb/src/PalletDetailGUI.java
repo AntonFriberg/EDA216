@@ -22,7 +22,7 @@ public class PalletDetailGUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	public PalletDetailGUI(List<Pallet> selectedValues) {
-		super("Pallet details");
+		super("Krusty Cookies AB");
 		int windowWidth = 700;
 		int windowHeight = selectedValues.size() < 30 ? 70+selectedValues.size()*15 : 530;
 		setPreferredSize(new Dimension(windowWidth, windowHeight));

@@ -40,7 +40,7 @@ public class BakeryGUI {
 		new Thread(new Runnable() {
 			public void run() {
 		
-				conOptionPane.showOptionDialog(null,  "Connecting to database ...", "Connecting window",JOptionPane.DEFAULT_OPTION,
+				conOptionPane.showOptionDialog(null,  "Connecting to database ...", "Krusty Cookies AB",JOptionPane.DEFAULT_OPTION,
 						JOptionPane.INFORMATION_MESSAGE, null, new Object[] {}, null);
 			}
 		}).start();
@@ -49,7 +49,7 @@ public class BakeryGUI {
 		/* --- change xxx to your user name, yyy to your password --- */
 		if (db.openConnection("db01", "dinmamma1")) {
 			conOptionPane.getRootFrame().dispose();
-			JFrame frame = new JFrame("Cookie baking");
+			JFrame frame = new JFrame("Krusty Cookies AB");
 			tabbedPane = new JTabbedPane();
 
 			SearchPane searchPane = new SearchPane(db);
@@ -69,7 +69,7 @@ public class BakeryGUI {
 			frame.setVisible(true);
 		} else {
 			conOptionPane.getRootFrame().dispose();
-			JOptionPane.showMessageDialog(new JFrame(), "Could not connect to server, please try again", "Error",
+			JOptionPane.showMessageDialog(new JFrame(), "Could not connect to server, please try again", "Krusty Cookies AB",
 					JOptionPane.WARNING_MESSAGE);
 		}
 	}

@@ -208,7 +208,8 @@ public class SearchPane extends BasicPane {
 		public void actionPerformed(ActionEvent e) {
 			entryActions();
 			JPanel card = null;
-			String chosenCookie=cookieBox.getSelectedIndex()==0?"%":cookieBox.getSelectedItem().toString();
+			String chosenCookie=cookieBox.getSelectedIndex()==0?"?":cookieBox.getSelectedItem().toString();
+			System.out.println(chosenCookie);
 			for (Component comp : chosenPanel.getComponents()) {
 				if (comp.isVisible() == true) {
 					card = (JPanel) comp;
@@ -227,20 +228,20 @@ public class SearchPane extends BasicPane {
 				Date endDate = (Date) ((JDatePickerImpl) card.getComponent(3)).getModel().getValue();
 				if (endDate != null) {
 					String endDateFormatted = df.format(endDate);
-					db.searchByDate(startDateFormatted, endDateFormatted, chosenCookie,palletListModel);
+					db.searchByDate(startDateFormatted, endDateFormatted, palletListModel);
 				} else {
 					// Här hanterar vi om man bara söker på ett datum.
-					db.searchByDate(startDateFormatted,chosenCookie ,palletListModel);
+					db.searchByDate(startDateFormatted, palletListModel);
 				}
 
 			} else
 			// Hämtar textfältet när man söker efter numret
 			if (card.getName().equals("Number")) {
 				JTextField input = (JTextField) card.getComponent(1);
-				db.searchById(input.getText(),chosenCookie ,palletListModel);
+				db.searchById(input.getText(), palletListModel);
 				input.setText("");
 			} else if (card.getName().equals("All")) {
-				db.searchByAll(chosenCookie,palletListModel);
+				db.searchByAll(palletListModel);
 
 			}
 			displayMessage("The search result is on the form \"Pallet ID | Production date | "

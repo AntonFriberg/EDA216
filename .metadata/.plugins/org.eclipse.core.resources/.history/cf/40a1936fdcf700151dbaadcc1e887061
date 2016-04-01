@@ -162,17 +162,14 @@ public class Database {
 		return pallets;
 	}
 
-	public void searchByAll(String chosenCookie,DefaultListModel<Pallet> cookieListModel) {
-		ArrayList<String> input = new ArrayList<String>();
-		input.add(chosenCookie);
-		execPrepPalSearchQuery("SELECT * FROM pallet WHERE cookieName LIKE ?;", cookieListModel, input, input.size());
+	public void searchByAll(DefaultListModel<Pallet> cookieListModel) {
+		execPrepPalSearchQuery("SELECT * FROM pallet;", cookieListModel, null, 0);
 	}
 
-	public void searchById(String id, String chosenCookie,DefaultListModel<Pallet> cookieListModel) {
+	public void searchById(String id, DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(id);
-		input.add(chosenCookie);
-		String q = "SELECT * FROM PALLET WHERE palletnbr=? AND cookieName LIKE ?";
+		String q = "SELECT * FROM PALLET WHERE palletnbr=?";
 		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
 
 	}

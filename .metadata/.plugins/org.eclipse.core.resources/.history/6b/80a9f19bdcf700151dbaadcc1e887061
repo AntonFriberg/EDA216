@@ -240,7 +240,7 @@ public class SearchPane extends BasicPane {
 				db.searchById(input.getText(),chosenCookie ,palletListModel);
 				input.setText("");
 			} else if (card.getName().equals("All")) {
-				db.searchByAll(chosenCookie,palletListModel);
+				db.searchByAll(palletListModel,chosenCookie);
 
 			}
 			displayMessage("The search result is on the form \"Pallet ID | Production date | "

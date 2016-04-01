@@ -237,10 +237,10 @@ public class SearchPane extends BasicPane {
 			// Hämtar textfältet när man söker efter numret
 			if (card.getName().equals("Number")) {
 				JTextField input = (JTextField) card.getComponent(1);
-				db.searchById(input.getText(),chosenCookie ,palletListModel);
+				db.searchById(input.getText(), palletListModel);
 				input.setText("");
 			} else if (card.getName().equals("All")) {
-				db.searchByAll(chosenCookie,palletListModel);
+				db.searchByAll(palletListModel);
 
 			}
 			displayMessage("The search result is on the form \"Pallet ID | Production date | "

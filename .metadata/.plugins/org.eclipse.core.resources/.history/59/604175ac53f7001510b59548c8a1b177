@@ -115,8 +115,8 @@ public class Database {
 				PreparedStatement stmt = conn.prepareStatement(
 						"UPDATE ingredient, (SELECT qty,ingrName from recipe where cookieName=?)q SET ingredient.saldo=(ingredient.saldo-q.qty) WHERE ingredient.ingrName = q.ingrName");
 				stmt.setString(1, cookieName);
-				if (stmt.executeUpdate() == 0) {
-					// kanske sska skriva typ slut på saldot här
+				if(stmt.executeUpdate() == 0){
+					//kanske sska skriva typ slut på saldot här
 					return null;
 				}
 				execStat.executeUpdate();
@@ -162,36 +162,31 @@ public class Database {
 		return pallets;
 	}
 
-	public void searchByAll(String chosenCookie,DefaultListModel<Pallet> cookieListModel) {
-		ArrayList<String> input = new ArrayList<String>();
-		input.add(chosenCookie);
-		execPrepPalSearchQuery("SELECT * FROM pallet WHERE cookieName LIKE ?;", cookieListModel, input, input.size());
+	public void searchByAll(DefaultListModel<Pallet> cookieListModel) {
+		execPrepPalSearchQuery("SELECT * FROM pallet;", cookieListModel, null, 0);
 	}
 
-	public void searchById(String id, String chosenCookie,DefaultListModel<Pallet> cookieListModel) {
+	public void searchById(String id, DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(id);
-		input.add(chosenCookie);
-		String q = "SELECT * FROM PALLET WHERE palletnbr=? AND cookieName LIKE ?";
+		String q = "SELECT * FROM PALLET WHERE palletnbr=?";
 		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
 
 	}
 
-	public void searchByDate(String startDateFormatted, String chosenCookie, DefaultListModel<Pallet> cookieListModel) {
+	public void searchByDate(String startDateFormatted, DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(startDateFormatted + "%");
-		input.add(chosenCookie);
-		String q = "SELECT * FROM PALLET WHERE bakedate LIKE ? AND cookieName LIKE ? ORDER BY bakedate";
+		String q = "SELECT * FROM PALLET WHERE bakedate LIKE ? ORDER BY bakedate";
 		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
 	}
 
-	public void searchByDate(String startDateFormatted, String endDateFormatted, String chosenCookie,
+	public void searchByDate(String startDateFormatted, String endDateFormatted,
 			DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(startDateFormatted + " 00:00:00");
 		input.add(endDateFormatted + " 23:59:59");
-		input.add(chosenCookie);
-		String q = "SELECT * FROM PALLET WHERE bakedate >= ? AND bakedate <=? AND cookieName LIKE ? ORDER BY bakedate";
+		String q = "SELECT * FROM PALLET WHERE bakedate >= ? AND bakedate <=? ORDER BY bakedate";
 		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
 	}
 

@@ -39,6 +39,7 @@ public class BakeryGUI {
 		JOptionPane conOptionPane=new JOptionPane();
 		new Thread(new Runnable() {
 			public void run() {
+		
 				conOptionPane.showOptionDialog(null,  "Connecting to database ...", "Krusty Cookies AB",JOptionPane.DEFAULT_OPTION,
 						JOptionPane.INFORMATION_MESSAGE, null, new Object[] {}, null);
 			}

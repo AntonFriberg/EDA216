@@ -150,7 +150,8 @@ public class Database {
 		} else {
 			return null;
 		}
-		return new Pallet(id, cookieName, "", date, null, null);
+		return null;
+		//return new Pallet(id, cookieName, "", date, null, null);
 	}
 
 	private ArrayList<Pallet> execPrepPalSearchQuery(String q, DefaultListModel<Pallet> cookieListModel,

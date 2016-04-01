@@ -46,7 +46,7 @@ public class BakeryGUI {
 
 		/* --- change code here --- */
 		/* --- change xxx to your user name, yyy to your password --- */
-		if (db.openConnection("db01", "dinmamma1")) {
+		if (db.openConnection("db01", "dinmamma")) {
 			conOptionPane.getRootFrame().dispose();
 			JFrame frame = new JFrame("Krusty Cookies AB");
 			tabbedPane = new JTabbedPane();

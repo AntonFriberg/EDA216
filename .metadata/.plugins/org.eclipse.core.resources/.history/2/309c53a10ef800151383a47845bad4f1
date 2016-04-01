@@ -227,7 +227,7 @@ public class ProductionPane extends BasicPane {
 				fields[2].setText((prodPal.getBakeDate().split(" "))[1]);
 				displayMessage("Your pallet was succesfully produced.");
 			} else {
-				displayMessage("Something went wrong. It is most likely the saldo or that you are dissconnected. Please try again!");
+				displayMessage("Not connected to the database, please try again.");
 			}
 		}
 	}

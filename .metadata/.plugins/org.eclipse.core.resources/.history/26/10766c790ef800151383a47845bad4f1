@@ -90,6 +90,7 @@ public class Database {
 				}
 				cookieName.close();
 			} catch (SQLException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 				System.out.println(e);
 			}
@@ -110,6 +111,7 @@ public class Database {
 				String[] returnArray = ingr.toArray(new String[ingr.size()]);
 				return returnArray;
 			} catch (SQLException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 				System.out.println(e);
 			}
@@ -118,6 +120,7 @@ public class Database {
 	}
 
 	public Pallet producePallet(String cookieName) {
+		// TODO Auto-generated method stub
 		int id = -1;
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		String date = df.format(new Date());
@@ -135,6 +138,7 @@ public class Database {
 						"UPDATE ingredient, (SELECT qty,ingrName from recipe where cookieName=?)q SET ingredient.saldo=(ingredient.saldo-q.qty) WHERE ingredient.ingrName = q.ingrName");
 				stmt.setString(1, cookieName);
 				if (stmt.executeUpdate() == 0) {
+					// kanske sska skriva typ slut på saldot här
 					return null;
 				}
 				execStat.executeUpdate();
@@ -144,6 +148,7 @@ public class Database {
 				}
 				execStat.close();
 			} catch (SQLException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 				System.out.println(e);
 			}

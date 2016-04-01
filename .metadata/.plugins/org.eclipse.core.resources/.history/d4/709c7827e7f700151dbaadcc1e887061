@@ -1,0 +1,231 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.swing.DefaultListModel;
+
+/**
+ * Database is a class that specifies the interface to the cookie database. Uses
+ * JDBC and the MySQL Connector/J driver.
+ */
+public class Database {
+	/**
+	 * The database connection.
+	 */
+	private Connection conn;
+
+	/**
+	 * Create the database interface object. Connection to the database is
+	 * performed later.
+	 */
+	public Database() {
+		conn = null;
+	}
+
+	/**
+	 * Open a connection to the database, using the specified user name and
+	 * password.
+	 * 
+	 * @param userName
+	 *            The user name.
+	 * @param password
+	 *            The user's password.
+	 * @return true if the connection succeeded, false if the supplied user name
+	 *         and password were not recognized. Returns false also if the JDBC
+	 *         driver isn't found.
+	 */
+	public boolean openConnection(String userName, String password) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://puccini.cs.lth.se/" + userName, userName, password);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Close the connection to the database.
+	 */
+	public void closeConnection() {
+		try {
+			if (conn != null) {
+				conn.close();
+			}
+		} catch (SQLException e) {
+		}
+		conn = null;
+	}
+
+	/**
+	 * Check if the connection to the database has been established
+	 * 
+	 * @return true if the connection has been established
+	 */
+	public boolean isConnected() {
+		return conn != null;
+	}
+
+	/* --- insert own code here --- */
+
+	public void getCookieNames(DefaultListModel<String> cookieListModel) {
+		if (isConnected()) {
+			try {
+				Statement execStat = conn.createStatement();
+				ResultSet cookieName = execStat.executeQuery("SELECT cookiename FROM Cookie");
+				while (cookieName.next()) {
+					cookieListModel.addElement(cookieName.getString(1));
+				}
+				cookieName.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(e);
+			}
+		}
+	}
+
+	public Pallet producePallet(String cookieName) {
+		// TODO Auto-generated method stub
+		int id = -1;
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		String date = df.format(new Date());
+		if (isConnected()) {
+			try {
+				PreparedStatement execStat = conn.prepareStatement("INSERT INTO pallet values (0,?,?,?,?,?);",
+						Statement.RETURN_GENERATED_KEYS);
+				String loc = "Freezer";
+				execStat.setString(1, cookieName);
+				execStat.setString(2, date);
+				execStat.setString(3, null);
+				execStat.setString(4, loc);
+				execStat.setString(5, null);
+				PreparedStatement stmt = conn.prepareStatement(
+						"UPDATE ingredient, (SELECT qty,ingrName from recipe where cookieName=?)q SET ingredient.saldo=(ingredient.saldo-q.qty) WHERE ingredient.ingrName = q.ingrName");
+				stmt.setString(1, cookieName);
+				if (stmt.executeUpdate() == 0) {
+					// kanske sska skriva typ slut på saldot här
+					return null;
+				}
+				execStat.executeUpdate();
+				ResultSet result = execStat.getGeneratedKeys();
+				while (result.next()) {
+					id = result.getInt(1);
+				}
+				execStat.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(e);
+			}
+		} else {
+			return null;
+		}
+		return new Pallet(id, cookieName, "", date, null, null);
+	}
+
+	private ArrayList<Pallet> execPrepPalSearchQuery(String q, DefaultListModel<Pallet> cookieListModel,
+			ArrayList<String> input, int unknowns) {
+		ArrayList<Pallet> pallets = new ArrayList<Pallet>();
+		try {
+			PreparedStatement execStat = conn.prepareStatement(q);
+			for (int i = 1; i < unknowns + 1; i++) {
+				execStat.setString(i, input.get(i - 1));
+			}
+			ResultSet result = execStat.executeQuery();
+			while (result.next()) {
+				int iD = result.getInt(1);
+				String name = result.getString(2);
+				String date = result.getString(3);
+				String isBlocked = result.getString(4);
+				String loc = result.getString(5);
+				int billId = result.getInt(6);
+				cookieListModel.addElement(new Pallet(iD, name, loc, date, isBlocked, null));
+			}
+			result.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pallets;
+	}
+
+	public void searchByAll(String chosenCookie,DefaultListModel<Pallet> cookieListModel) {
+		ArrayList<String> input = new ArrayList<String>();
+		input.add(chosenCookie);
+		execPrepPalSearchQuery("SELECT * FROM pallet WHERE cookieName LIKE ?;", cookieListModel, input, input.size());
+	}
+
+	public void searchById(String id, String chosenCookie,DefaultListModel<Pallet> cookieListModel) {
+		ArrayList<String> input = new ArrayList<String>();
+		input.add(id);
+		input.add(chosenCookie);
+		String q = "SELECT * FROM PALLET WHERE palletnbr=? AND cookieName LIKE ?";
+		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
+
+	}
+
+	public void searchByDate(String startDateFormatted, String chosenCookie, DefaultListModel<Pallet> cookieListModel) {
+		ArrayList<String> input = new ArrayList<String>();
+		input.add(startDateFormatted + "%");
+		input.add(chosenCookie);
+		String q = "SELECT * FROM PALLET WHERE bakedate LIKE ? AND cookieName LIKE ? ORDER BY bakedate";
+		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
+	}
+
+	public void searchByDate(String startDateFormatted, String endDateFormatted, String chosenCookie,
+			DefaultListModel<Pallet> cookieListModel) {
+		ArrayList<String> input = new ArrayList<String>();
+		input.add(startDateFormatted + " 00:00:00");
+		input.add(endDateFormatted + " 23:59:59");
+		input.add(chosenCookie);
+		String q = "SELECT * FROM PALLET WHERE bakedate >= ? AND bakedate <=? AND cookieName LIKE ? ORDER BY bakedate";
+		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
+	}
+
+	public void blockPallet(String selectedValues, String change) {
+		try {
+			PreparedStatement execStat = conn.prepareStatement("UPDATE pallet SET isblocked=? WHERE palletnbr=?");
+			execStat.setString(1, change);
+			execStat.setString(2, selectedValues);
+			execStat.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public String[] getIngrNames() {
+		if (isConnected()) {
+			ArrayList<String> ingr=new ArrayList<String>();
+			try {
+				Statement execStat = conn.createStatement();
+				ResultSet ingrName = execStat.executeQuery("Select ingrName from Ingredient");
+				ingr.add("Search for any ingredient");
+				while (ingrName.next()) {
+					ingr.add(ingrName.getString(1));
+				}
+				ingrName.close();
+				System.out.println(ingr.toString());
+				String[] returnArray=ingr.toArray(new String[ingr.size()]);
+				return returnArray;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(e);
+			}
+		}
+		return null;
+	}
+}

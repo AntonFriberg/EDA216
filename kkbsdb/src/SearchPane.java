@@ -43,7 +43,7 @@ public class SearchPane extends BasicPane {
 	final static String TEXTPANEL = "Search by pallet number";
 	final static String CALENDERPANEL = "Search pallet by date";
 	final static String ALLPANEL = "Search all pallets";
-	final static String allCookieTypes = "Search for all cookie types";
+	final static String allCookieTypes = "Search for any cookie type";
 
 	/**
 	 * The list model for the movie name list.
@@ -54,7 +54,8 @@ public class SearchPane extends BasicPane {
 	 * The movie name list.
 	 */
 	private JList<Pallet> palletList;
-	//komponenten som innehåller valet av kaka
+	// komponenten som innehåller valet av kaka/ingr
+	private JComboBox<String> ingrBox;
 	private JComboBox<String> cookieBox;
 	private JPanel chosenPanel;
 
@@ -119,20 +120,26 @@ public class SearchPane extends BasicPane {
 		JPanel p = new JPanel();
 		p.setLayout(new GridLayout(2, 1));
 		JPanel comboBoxPane = new JPanel();
-		comboBoxPane.setLayout(new GridLayout(2,1));
-		
+		comboBoxPane.setLayout(new GridLayout(3, 1));
+
 		String comboBoxItems[] = { CHOOSEPANEL, TEXTPANEL, CALENDERPANEL, ALLPANEL };
 		JComboBox<String> cb = new JComboBox<String>(comboBoxItems);
 		cb.setEditable(false);
 		cb.addItemListener(new ItemHandler());
 		comboBoxPane.add(cb);
-		
-		String cookieBoxItems[] = { allCookieTypes, "Almond delight","Amneris" , "Berliner","Nut cookie",
-									"Nut Ring","Tango"};
+
+		String[] cookieBoxItems=db.getCookieNames();
 		cookieBox = new JComboBox<String>(cookieBoxItems);
 		cookieBox.setEditable(false);
 		cookieBox.addItemListener(new ItemHandler());
 		comboBoxPane.add(cookieBox);
+
+		String ingrBoxItems[] = db.getIngrNames(); 
+		ingrBox = new JComboBox<String>(ingrBoxItems);
+		ingrBox.setEditable(false);
+		ingrBox.addItemListener(new ItemHandler());
+		comboBoxPane.add(ingrBox);
+		comboBoxPane.add(ingrBox);
 
 		JPanel card1 = new JPanel();
 		card1.setName("Empty");
@@ -208,7 +215,7 @@ public class SearchPane extends BasicPane {
 		public void actionPerformed(ActionEvent e) {
 			entryActions();
 			JPanel card = null;
-			String chosenCookie=cookieBox.getSelectedIndex()==0?"%":cookieBox.getSelectedItem().toString();
+			String chosenCookie = cookieBox.getSelectedIndex() == 0 ? "%" : cookieBox.getSelectedItem().toString();
 			for (Component comp : chosenPanel.getComponents()) {
 				if (comp.isVisible() == true) {
 					card = (JPanel) comp;
@@ -227,20 +234,20 @@ public class SearchPane extends BasicPane {
 				Date endDate = (Date) ((JDatePickerImpl) card.getComponent(3)).getModel().getValue();
 				if (endDate != null) {
 					String endDateFormatted = df.format(endDate);
-					db.searchByDate(startDateFormatted, endDateFormatted, chosenCookie,palletListModel);
+					db.searchByDate(startDateFormatted, endDateFormatted, chosenCookie, palletListModel);
 				} else {
 					// Här hanterar vi om man bara söker på ett datum.
-					db.searchByDate(startDateFormatted,chosenCookie ,palletListModel);
+					db.searchByDate(startDateFormatted, chosenCookie, palletListModel);
 				}
 
 			} else
 			// Hämtar textfältet när man söker efter numret
 			if (card.getName().equals("Number")) {
 				JTextField input = (JTextField) card.getComponent(1);
-				db.searchById(input.getText(),chosenCookie ,palletListModel);
+				db.searchById(input.getText(), chosenCookie, palletListModel);
 				input.setText("");
 			} else if (card.getName().equals("All")) {
-				db.searchByAll(chosenCookie,palletListModel);
+				db.searchByAll(chosenCookie, palletListModel);
 
 			}
 			displayMessage("The search result is on the form \"Pallet ID | Production date | "

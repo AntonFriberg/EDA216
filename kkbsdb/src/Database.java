@@ -96,6 +96,29 @@ public class Database {
 			}
 		}
 	}
+	public String[] getCookieNames() {
+		if (isConnected()) {
+			ArrayList<String> ingr=new ArrayList<String>();
+			try {
+				Statement execStat = conn.createStatement();
+				ResultSet ingrName = execStat.executeQuery("SELECT cookiename FROM Cookie");
+				ingr.add("Search for any cookie");
+				while (ingrName.next()) {
+					ingr.add(ingrName.getString(1));
+				}
+				ingrName.close();
+				String[] returnArray=ingr.toArray(new String[ingr.size()]);
+				return returnArray;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(e);
+			}
+		}
+		return null;
+	}
+	
+	
 
 	public Pallet producePallet(String cookieName) {
 		// TODO Auto-generated method stub
@@ -206,4 +229,25 @@ public class Database {
 		}
 	}
 
+	public String[] getIngrNames() {
+		if (isConnected()) {
+			ArrayList<String> ingr=new ArrayList<String>();
+			try {
+				Statement execStat = conn.createStatement();
+				ResultSet ingrName = execStat.executeQuery("Select ingrName from Ingredient");
+				ingr.add("Search for any ingredient");
+				while (ingrName.next()) {
+					ingr.add(ingrName.getString(1));
+				}
+				ingrName.close();
+				String[] returnArray=ingr.toArray(new String[ingr.size()]);
+				return returnArray;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(e);
+			}
+		}
+		return null;
+	}
 }

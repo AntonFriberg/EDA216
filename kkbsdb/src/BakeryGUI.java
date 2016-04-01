@@ -3,8 +3,12 @@ import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -32,34 +36,41 @@ public class BakeryGUI {
 	 */
 	public BakeryGUI(Database db) {
 		this.db = db;
-
-		JFrame frame = new JFrame("Cookie baking");
-		tabbedPane = new JTabbedPane();
-
-		SearchPane searchPane = new SearchPane(db);
-		tabbedPane.addTab("Pallet search", null, searchPane, "Used to search for one or more pallets");
-
-		ProductionPane prodPane = new ProductionPane(db);
-		tabbedPane.addTab("Add pallet", null, prodPane, "Add a produced pallet to the db");
-
-		tabbedPane.setSelectedIndex(0);
-
-		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
-
-		tabbedPane.addChangeListener(new ChangeHandler());
-		frame.addWindowListener(new WindowHandler());
-
-		frame.setSize(600, 500);
-		frame.setVisible(true);
-
-		searchPane.displayMessage("Connecting to database ...");
+		JOptionPane conOptionPane=new JOptionPane();
+		new Thread(new Runnable() {
+			public void run() {
+		
+				conOptionPane.showOptionDialog(null,  "Connecting to database ...", "Connecting window",JOptionPane.DEFAULT_OPTION,
+						JOptionPane.INFORMATION_MESSAGE, null, new Object[] {}, null);
+			}
+		}).start();
 
 		/* --- change code here --- */
 		/* --- change xxx to your user name, yyy to your password --- */
 		if (db.openConnection("db01", "dinmamma1")) {
-			searchPane.displayMessage("Connected to database");
+			conOptionPane.getRootFrame().dispose();
+			JFrame frame = new JFrame("Cookie baking");
+			tabbedPane = new JTabbedPane();
+
+			SearchPane searchPane = new SearchPane(db);
+			tabbedPane.addTab("Pallet search", null, searchPane, "Used to search for one or more pallets");
+
+			ProductionPane prodPane = new ProductionPane(db);
+			tabbedPane.addTab("Add pallet", null, prodPane, "Add a produced pallet to the db");
+
+			tabbedPane.setSelectedIndex(0);
+
+			frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
+
+			tabbedPane.addChangeListener(new ChangeHandler());
+			frame.addWindowListener(new WindowHandler());
+
+			frame.setSize(600, 500);
+			frame.setVisible(true);
 		} else {
-			searchPane.displayMessage("Could not connect to database");
+			conOptionPane.getRootFrame().dispose();
+			JOptionPane.showMessageDialog(new JFrame(), "Could not connect to server, please try again", "Error",
+					JOptionPane.WARNING_MESSAGE);
 		}
 	}
 

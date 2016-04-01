@@ -1,0 +1,27 @@
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+
+
+public class ConnectGUI extends JFrame{
+	private Database db;
+	public ConnectGUI(Database db){
+		super("Login screen");
+		this.db=db;
+		JPanel panel=new JPanel();
+		JTextField loginText=new JTextField();
+		loginText.setEditable(false);
+	}
+	public static void main(String[] args){
+		Database db=new Database();
+		if(db.openConnection("db01", "dinmamma1")){
+			System.out.println("hello");
+			new Bakery();
+		} else {
+			new JOptionPane();
+		}
+	}
+}
+

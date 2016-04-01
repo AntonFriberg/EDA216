@@ -1,4 +1,9 @@
-
+/*
+ * Finns något som heter try- with-resourses. Man kör då try(resourse){
+ * kan även fånga eller ha finally som avslutning.
+ * Fördelen är att när man slutför allt innanför kallas .close() på 
+ * alla object som är öppna
+ */
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -82,7 +87,8 @@ public class Database {
 
 	public void getCookieNames(DefaultListModel<String> cookieListModel) {
 		if (isConnected()) {
-			try (Statement execStat = conn.createStatement()) {
+			try (Statement execStat = conn.createStatement()){
+				
 				ResultSet cookieName = execStat.executeQuery("SELECT cookiename FROM Cookie");
 				while (cookieName.next()) {
 					cookieListModel.addElement(cookieName.getString(1));
@@ -97,7 +103,7 @@ public class Database {
 	public String[] getCookieNames() {
 		if (isConnected()) {
 			ArrayList<String> ingr = new ArrayList<String>();
-			try (Statement execStat = conn.createStatement()) {
+			try (Statement execStat = conn.createStatement()){
 				ResultSet ingrName = execStat.executeQuery("SELECT cookiename FROM Cookie");
 				ingr.add("Search for any cookie");
 				while (ingrName.next()) {
@@ -119,7 +125,7 @@ public class Database {
 		String date = df.format(new Date());
 		if (isConnected()) {
 			try (PreparedStatement execStat = conn.prepareStatement("INSERT INTO pallet values (0,?,?,?,?,?);",
-					Statement.RETURN_GENERATED_KEYS)) {
+						Statement.RETURN_GENERATED_KEYS)){
 				String loc = "Freezer";
 				execStat.setString(1, cookieName);
 				execStat.setString(2, date);
@@ -150,8 +156,8 @@ public class Database {
 	private ArrayList<Pallet> execPrepPalSearchQuery(String q, DefaultListModel<Pallet> cookieListModel,
 			ArrayList<String> input, int unknowns) {
 		ArrayList<Pallet> pallets = new ArrayList<Pallet>();
-		try (PreparedStatement execStat = conn.prepareStatement(q)) {
-
+		try (PreparedStatement execStat = conn.prepareStatement(q)){
+			
 			for (int i = 1; i < unknowns + 1; i++) {
 				execStat.setString(i, input.get(i - 1));
 			}
@@ -171,17 +177,14 @@ public class Database {
 		return pallets;
 	}
 
-	public void searchByAll(String chosenCookie, String chosenIngr, DefaultListModel<Pallet> cookieListModel) {
+	public void searchByAll(String chosenCookie,String chosenIngr ,DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(chosenCookie);
 		input.add(chosenIngr);
-		execPrepPalSearchQuery(
-				"SELECT * FROM pallet WHERE cookieName LIKE ? AND cookieName IN (SELECT cookieName from recipe WHERE ingrname LIKE ?);",
-				cookieListModel, input, input.size());
+		execPrepPalSearchQuery("SELECT * FROM pallet WHERE cookieName LIKE ? AND cookieName IN (SELECT cookieName from recipe WHERE ingrname LIKE ?);", cookieListModel, input, input.size());
 	}
 
-	public void searchById(String id, String chosenCookie, String chosenIngr,
-			DefaultListModel<Pallet> cookieListModel) {
+	public void searchById(String id, String chosenCookie,String chosenIngr, DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(id);
 		input.add(chosenCookie);
@@ -191,8 +194,7 @@ public class Database {
 
 	}
 
-	public void searchByDate(String startDateFormatted, String chosenCookie, String chosenIngr,
-			DefaultListModel<Pallet> cookieListModel) {
+	public void searchByDate(String startDateFormatted, String chosenCookie, String chosenIngr,DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(startDateFormatted + "%");
 		input.add(chosenCookie);
@@ -201,8 +203,8 @@ public class Database {
 		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
 	}
 
-	public void searchByDate(String startDateFormatted, String endDateFormatted, String chosenCookie, String chosenIngr,
-			DefaultListModel<Pallet> cookieListModel) {
+	public void searchByDate(String startDateFormatted, String endDateFormatted, String chosenCookie,
+			String chosenIngr,DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(startDateFormatted + " 00:00:00");
 		input.add(endDateFormatted + " 23:59:59");
@@ -213,7 +215,8 @@ public class Database {
 	}
 
 	public void blockPallet(String selectedValues, String change) {
-		try (PreparedStatement execStat = conn.prepareStatement("UPDATE pallet SET isblocked=? WHERE palletnbr=?")) {
+		try {
+			PreparedStatement execStat = conn.prepareStatement("UPDATE pallet SET isblocked=? WHERE palletnbr=?");
 			execStat.setString(1, change);
 			execStat.setString(2, selectedValues);
 			execStat.executeUpdate();
@@ -225,7 +228,7 @@ public class Database {
 	public String[] getIngrNames() {
 		if (isConnected()) {
 			ArrayList<String> ingr = new ArrayList<String>();
-			try (Statement execStat = conn.createStatement()) {
+			try(Statement execStat = conn.createStatement()) {
 				ResultSet ingrName = execStat.executeQuery("Select ingrName from Ingredient");
 				ingr.add("Search for any ingredient");
 				while (ingrName.next()) {

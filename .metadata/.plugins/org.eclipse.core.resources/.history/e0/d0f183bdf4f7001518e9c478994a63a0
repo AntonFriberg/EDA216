@@ -191,12 +191,11 @@ public class Database {
 		execPrepPalSearchQuery("SELECT * FROM pallet WHERE cookieName LIKE ? AND cookieName IN (SELECT cookieName from recipe WHERE ingrname LIKE ?);", cookieListModel, input, input.size());
 	}
 
-	public void searchById(String id, String chosenCookie,String chosenIngr, DefaultListModel<Pallet> cookieListModel) {
+	public void searchById(String id, String chosenCookie, DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(id);
 		input.add(chosenCookie);
-		input.add(chosenIngr);
-		String q = "SELECT * FROM PALLET WHERE palletnbr=? AND cookieName LIKE ? AND cookieName IN (SELECT cookieName from recipe WHERE ingrname LIKE ?)";
+		String q = "SELECT * FROM PALLET WHERE palletnbr=? AND cookieName LIKE ?";
 		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
 
 	}

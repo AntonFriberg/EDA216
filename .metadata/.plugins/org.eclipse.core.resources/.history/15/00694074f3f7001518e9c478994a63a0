@@ -96,10 +96,9 @@ public class Database {
 			}
 		}
 	}
-
 	public String[] getCookieNames() {
 		if (isConnected()) {
-			ArrayList<String> ingr = new ArrayList<String>();
+			ArrayList<String> ingr=new ArrayList<String>();
 			try {
 				Statement execStat = conn.createStatement();
 				ResultSet ingrName = execStat.executeQuery("SELECT cookiename FROM Cookie");
@@ -108,7 +107,7 @@ public class Database {
 					ingr.add(ingrName.getString(1));
 				}
 				ingrName.close();
-				String[] returnArray = ingr.toArray(new String[ingr.size()]);
+				String[] returnArray=ingr.toArray(new String[ingr.size()]);
 				return returnArray;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -118,6 +117,8 @@ public class Database {
 		}
 		return null;
 	}
+	
+	
 
 	public Pallet producePallet(String cookieName) {
 		// TODO Auto-generated method stub
@@ -184,40 +185,36 @@ public class Database {
 		return pallets;
 	}
 
-	public void searchByAll(String chosenCookie,String chosenIngr ,DefaultListModel<Pallet> cookieListModel) {
+	public void searchByAll(String chosenCookie,DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(chosenCookie);
-		input.add(chosenIngr);
-		execPrepPalSearchQuery("SELECT * FROM pallet WHERE cookieName LIKE ? AND cookieName IN (SELECT cookieName from recipe WHERE ingrname LIKE ?);", cookieListModel, input, input.size());
+		execPrepPalSearchQuery("SELECT * FROM pallet WHERE cookieName LIKE ?;", cookieListModel, input, input.size());
 	}
 
-	public void searchById(String id, String chosenCookie,String chosenIngr, DefaultListModel<Pallet> cookieListModel) {
+	public void searchById(String id, String chosenCookie,DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(id);
 		input.add(chosenCookie);
-		input.add(chosenIngr);
-		String q = "SELECT * FROM PALLET WHERE palletnbr=? AND cookieName LIKE ? AND cookieName IN (SELECT cookieName from recipe WHERE ingrname LIKE ?)";
+		String q = "SELECT * FROM PALLET WHERE palletnbr=? AND cookieName LIKE ?";
 		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
 
 	}
 
-	public void searchByDate(String startDateFormatted, String chosenCookie, String chosenIngr,DefaultListModel<Pallet> cookieListModel) {
+	public void searchByDate(String startDateFormatted, String chosenCookie, DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(startDateFormatted + "%");
 		input.add(chosenCookie);
-		input.add(chosenIngr);
-		String q = "SELECT * FROM PALLET WHERE bakedate LIKE ? AND cookieName LIKE ? AND cookieName IN (SELECT cookieName from recipe WHERE ingrname LIKE ?) ORDER BY bakedate ";
+		String q = "SELECT * FROM PALLET WHERE bakedate LIKE ? AND cookieName LIKE ? ORDER BY bakedate";
 		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
 	}
 
 	public void searchByDate(String startDateFormatted, String endDateFormatted, String chosenCookie,
-			String chosenIngr,DefaultListModel<Pallet> cookieListModel) {
+			DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(startDateFormatted + " 00:00:00");
 		input.add(endDateFormatted + " 23:59:59");
 		input.add(chosenCookie);
-		input.add(chosenIngr);
-		String q = "SELECT * FROM PALLET WHERE bakedate >= ? AND bakedate <=? AND cookieName LIKE ? AND cookieName IN (SELECT cookieName from recipe WHERE ingrname LIKE ?) ORDER BY bakedate";
+		String q = "SELECT * FROM PALLET WHERE bakedate >= ? AND bakedate <=? AND cookieName LIKE ? ORDER BY bakedate";
 		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
 	}
 
@@ -234,7 +231,7 @@ public class Database {
 
 	public String[] getIngrNames() {
 		if (isConnected()) {
-			ArrayList<String> ingr = new ArrayList<String>();
+			ArrayList<String> ingr=new ArrayList<String>();
 			try {
 				Statement execStat = conn.createStatement();
 				ResultSet ingrName = execStat.executeQuery("Select ingrName from Ingredient");
@@ -243,7 +240,7 @@ public class Database {
 					ingr.add(ingrName.getString(1));
 				}
 				ingrName.close();
-				String[] returnArray = ingr.toArray(new String[ingr.size()]);
+				String[] returnArray=ingr.toArray(new String[ingr.size()]);
 				return returnArray;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

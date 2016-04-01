@@ -2,7 +2,10 @@
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.MalformedURLException;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -39,8 +42,14 @@ public class BakeryGUI {
 		JOptionPane conOptionPane=new JOptionPane();
 		new Thread(new Runnable() {
 			public void run() {
-				conOptionPane.showOptionDialog(null,  "Connecting to database ...", "Krusty Cookies AB",JOptionPane.DEFAULT_OPTION,
-						JOptionPane.INFORMATION_MESSAGE, null, new Object[] {}, null);
+				ImageIcon icon=null;
+		        try {
+					icon = new ImageIcon(new URL("http://www.archisevilla.org/wp-content/themes/archisevilla/images/loading.gif"));
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				}
+				conOptionPane.showOptionDialog(null,  "Connecting to database...", "Krusty Cookies AB",JOptionPane.DEFAULT_OPTION,
+						JOptionPane.INFORMATION_MESSAGE, icon, new Object[] {},null );
 			}
 		}).start();
 

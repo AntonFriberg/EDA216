@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JList;
@@ -28,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
@@ -41,12 +43,12 @@ public class SearchPane extends BasicPane {
 	final static String ALLPANEL = "Search all pallets";
 	final static String allCookieTypes = "Search for any cookie type";
 
-
 	private DefaultListModel<Pallet> palletListModel;
 	private JList<Pallet> palletList;
 	// komponenten som innehåller valet av kaka/ingr
 	private JComboBox<String> ingrBox;
 	private JComboBox<String> cookieBox;
+	private boolean onlyBlocked = false;
 	private JPanel chosenPanel;
 
 	public SearchPane(Database db) {
@@ -99,12 +101,12 @@ public class SearchPane extends BasicPane {
 		ActionHandler actHand = new ActionHandler();
 		return new ButtonAndMessagePanel(buttons, messageLabel, actHand);
 	}
-	
+
 	public JComponent createLeftPanel() {
 		JPanel p = new JPanel();
 		p.setLayout(new GridLayout(2, 1));
 		JPanel comboBoxPane = new JPanel();
-		comboBoxPane.setLayout(new GridLayout(3, 1));
+		comboBoxPane.setLayout(new GridLayout(4, 1));
 
 		// Fönstret man kan välja search på
 		String comboBoxItems[] = { CHOOSEPANEL, TEXTPANEL, CALENDERPANEL, ALLPANEL };
@@ -127,6 +129,11 @@ public class SearchPane extends BasicPane {
 		ingrBox.addItemListener(new ItemHandler());
 		comboBoxPane.add(ingrBox);
 		comboBoxPane.add(ingrBox);
+
+		// Checkrutan om man vill visa alla eller bara blockade
+		JCheckBox onlyBlockedCheck = new JCheckBox("Only show blocked pallets.");
+		onlyBlockedCheck.addActionListener(new BlockMarkActionListener());
+		comboBoxPane.add(onlyBlockedCheck);
 
 		// Fönstret när man inte valt sätt att välja på
 		JPanel card1 = new JPanel();
@@ -233,17 +240,30 @@ public class SearchPane extends BasicPane {
 				JTextField input = (JTextField) card.getComponent(1);
 				db.searchById(input.getText(), chosenCookie, chosenIngr, palletListModel);
 				input.setText("");
-			} else 
-			
+			} else
+
 			if (card.getName().equals("All")) {
-				//Söker efter alla pallar
+				// Söker efter alla pallar
 				db.searchByAll(chosenCookie, chosenIngr, palletListModel);
 
 			} else {
-				//Här har man inte valt något söksätt
+				// Här har man inte valt något söksätt
 				displayMessage("Please choose which way you'd like to search!");
 				return;
 			}
+			//Detta går säkert att fixa i query för att minska belastningen på DB
+			//Men denna lösning gick fort :D
+			if (onlyBlocked) {
+				for (int i = 0; i < palletListModel.size(); i++) {
+					Pallet p = palletListModel.getElementAt(i);
+					if (p.isBlocked() == null) {
+						palletListModel.remove(i);
+						i--;
+					}
+				}
+			}
+			palletList.setModel(palletListModel);
+
 			displayMessage("The search result is on the form \"Pallet ID | Production date | "
 					+ "Cookie name | Blocked Y/N? \"");
 			palletList.setModel(palletListModel);
@@ -303,6 +323,14 @@ public class SearchPane extends BasicPane {
 			List<Pallet> selectedValues = (List<Pallet>) palletList.getSelectedValuesList();
 
 			new PalletDetailGUI(selectedValues);
+		}
+	}
+
+	// hanterar rutan man kan klicka om man bara vill ha blockade.
+	class BlockMarkActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			onlyBlocked = onlyBlocked ? false : true;
+			boolean test=false;
 		}
 	}
 }

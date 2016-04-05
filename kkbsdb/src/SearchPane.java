@@ -15,7 +15,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +28,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
@@ -138,12 +136,7 @@ public class SearchPane extends BasicPane {
 		// Fönstret när man inte valt sätt att välja på
 		JPanel card1 = new JPanel();
 		card1.setName("Empty");
-		JTextField noSearch = new JTextField();
-		noSearch.setText("Här kan vi skriva hur en sök går till");
-		noSearch.setEditable(false);
-		noSearch.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		card1.add(noSearch);
-
+		
 		// Fönstret när man väljer att söka på id
 		JPanel card2 = new JPanel();
 		card2.setName("Number");

@@ -151,7 +151,6 @@ public class Database {
 			ArrayList<String> input, int unknowns) {
 		ArrayList<Pallet> pallets = new ArrayList<Pallet>();
 		try (PreparedStatement execStat = conn.prepareStatement(q)) {
-
 			for (int i = 1; i < unknowns + 1; i++) {
 				execStat.setString(i, input.get(i - 1));
 			}
@@ -162,7 +161,7 @@ public class Database {
 				String date = result.getString(3);
 				String isBlocked = result.getString(4);
 				String loc = result.getString(5);
-				int billId = result.getInt(6);
+				//int billId = result.getInt(6);
 				cookieListModel.addElement(new Pallet(iD, name, loc, date, isBlocked, null));
 			}
 		} catch (SQLException e) {

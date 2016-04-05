@@ -251,6 +251,21 @@ public class SearchPane extends BasicPane {
 				displayMessage("Please choose which way you'd like to search!");
 				return;
 			}
+			//Detta går säkert att fixa i query för att minska belastningen på DB
+			//Men denna lösning gick fort :D
+			/*
+			if (onlyBlocked) {
+				for (int i = 0; i < palletListModel.size(); i++) {
+					Pallet p = palletListModel.getElementAt(i);
+					if (p.isBlocked() == null) {
+						palletListModel.remove(i);
+						i--;
+					}
+				}
+			}*/
+			
+			palletList.setModel(palletListModel);
+
 			displayMessage("The search result is on the form \"Pallet ID | Production date | "
 					+ "Cookie name | Blocked Y/N? \"");
 			palletList.setModel(palletListModel);

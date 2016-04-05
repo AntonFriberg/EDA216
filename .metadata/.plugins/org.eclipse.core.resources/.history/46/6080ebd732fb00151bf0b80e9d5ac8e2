@@ -155,6 +155,7 @@ public class Database {
 			for (int i = 1; i < unknowns + 1; i++) {
 				execStat.setString(i, input.get(i - 1));
 			}
+			System.out.println(execStat.toString());
 			ResultSet result = execStat.executeQuery();
 			while (result.next()) {
 				int iD = result.getInt(1);
@@ -171,49 +172,44 @@ public class Database {
 		return pallets;
 	}
 
-	public void searchByAll(String chosenCookie, String chosenIngr, String onlyBlocked,
-			DefaultListModel<Pallet> cookieListModel) {
+	public void searchByAll(String chosenCookie, String chosenIngr, String onlyBlocked,DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(chosenCookie);
 		input.add(chosenIngr);
 		execPrepPalSearchQuery(
-				"SELECT * FROM pallet WHERE cookieName LIKE ? AND cookieName IN (SELECT cookieName from recipe WHERE ingrname LIKE ?)"
-						+ onlyBlocked + ";",
+				"SELECT * FROM pallet WHERE cookieName LIKE ? AND cookieName IN (SELECT cookieName from recipe WHERE ingrname LIKE ?)"+onlyBlocked+";",
 				cookieListModel, input, input.size());
 	}
 
-	public void searchById(String id, String chosenCookie, String chosenIngr, String onlyBlocked,
+	public void searchById(String id, String chosenCookie, String chosenIngr,String onlyBlocked,
 			DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(id);
 		input.add(chosenCookie);
 		input.add(chosenIngr);
-		String q = "SELECT * FROM PALLET WHERE palletnbr=? AND cookieName LIKE ? AND cookieName IN (SELECT cookieName from recipe WHERE ingrname LIKE ?)"
-				+ onlyBlocked + ";";
+		String q = "SELECT * FROM PALLET WHERE palletnbr=? AND cookieName LIKE ? AND cookieName IN (SELECT cookieName from recipe WHERE ingrname LIKE ?)"+onlyBlocked+";";
 		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
 
 	}
 
-	public void searchByDate(String startDateFormatted, String chosenCookie, String chosenIngr, String onlyBlocked,
+	public void searchByDate(String startDateFormatted, String chosenCookie, String chosenIngr,String onlyBlocked,
 			DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(startDateFormatted + "%");
 		input.add(chosenCookie);
 		input.add(chosenIngr);
-		String q = "SELECT * FROM PALLET WHERE bakedate LIKE ? AND cookieName LIKE ? AND cookieName IN (SELECT cookieName from recipe WHERE ingrname LIKE ?) "
-				+ onlyBlocked + " ORDER BY bakedate;";
+		String q = "SELECT * FROM PALLET WHERE bakedate LIKE ? AND cookieName LIKE ? AND cookieName IN (SELECT cookieName from recipe WHERE ingrname LIKE ?) "+onlyBlocked+";"+" ORDER BY bakedate ";
 		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
 	}
 
-	public void searchByDate(String startDateFormatted, String endDateFormatted, String chosenCookie, String chosenIngr,
-			String onlyBlocked, DefaultListModel<Pallet> cookieListModel) {
+	public void searchByDate(String startDateFormatted, String endDateFormatted, String chosenCookie, String chosenIngr,String onlyBlocked,
+			DefaultListModel<Pallet> cookieListModel) {
 		ArrayList<String> input = new ArrayList<String>();
 		input.add(startDateFormatted + " 00:00:00");
 		input.add(endDateFormatted + " 23:59:59");
 		input.add(chosenCookie);
 		input.add(chosenIngr);
-		String q = "SELECT * FROM PALLET WHERE bakedate >= ? AND bakedate <=? AND cookieName LIKE ? AND cookieName IN (SELECT cookieName from recipe WHERE ingrname LIKE ?) "
-				+ onlyBlocked + " ORDER BY bakedate;";
+		String q = "SELECT * FROM PALLET WHERE bakedate >= ? AND bakedate <=? AND cookieName LIKE ? AND cookieName IN (SELECT cookieName from recipe WHERE ingrname LIKE ?) "+onlyBlocked+";"+" ORDER BY bakedate";
 		execPrepPalSearchQuery(q, cookieListModel, input, input.size());
 	}
 

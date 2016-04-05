@@ -228,17 +228,17 @@ public class SearchPane extends BasicPane {
 				if (endDate != null) {
 					// Här hanterar vi om man bara söker på ett datumintervall.
 					String endDateFormatted = df.format(endDate);
-					db.searchByDate(startDateFormatted, endDateFormatted, chosenCookie, chosenIngr, onlyBlocked,palletListModel);
+					db.searchByDate(startDateFormatted, endDateFormatted, chosenCookie, chosenIngr, palletListModel);
 				} else {
 					// Här hanterar vi om man bara söker på ett datum.
-					db.searchByDate(startDateFormatted, chosenCookie, chosenIngr, onlyBlocked,palletListModel);
+					db.searchByDate(startDateFormatted, chosenCookie, chosenIngr, palletListModel);
 				}
 
 			} else
 			// Hämtar textfältet när man söker efter numret
 			if (card.getName().equals("Number")) {
 				JTextField input = (JTextField) card.getComponent(1);
-				db.searchById(input.getText(), chosenCookie, chosenIngr, onlyBlocked,palletListModel);
+				db.searchById(input.getText(), chosenCookie, chosenIngr, palletListModel);
 				input.setText("");
 			} else
 
@@ -251,6 +251,21 @@ public class SearchPane extends BasicPane {
 				displayMessage("Please choose which way you'd like to search!");
 				return;
 			}
+			//Detta går säkert att fixa i query för att minska belastningen på DB
+			//Men denna lösning gick fort :D
+			/*
+			if (onlyBlocked) {
+				for (int i = 0; i < palletListModel.size(); i++) {
+					Pallet p = palletListModel.getElementAt(i);
+					if (p.isBlocked() == null) {
+						palletListModel.remove(i);
+						i--;
+					}
+				}
+			}*/
+			
+			palletList.setModel(palletListModel);
+
 			displayMessage("The search result is on the form \"Pallet ID | Production date | "
 					+ "Cookie name | Blocked Y/N? \"");
 			palletList.setModel(palletListModel);

@@ -17,8 +17,6 @@ import javax.swing.DefaultListModel;
  * JDBC and the MySQL Connector/J driver.
  */
 public class Database {
-	//Recepies in db is only 100 cookies, a pallet contains 5400
-	final static String palletMul="54";
 	/**
 	 * The database connection.
 	 */
@@ -98,14 +96,14 @@ public class Database {
 
 	public String[] getCookieNames() {
 		if (isConnected()) {
-			ArrayList<String> cookie = new ArrayList<String>();
+			ArrayList<String> ingr = new ArrayList<String>();
 			try (Statement execStat = conn.createStatement()) {
 				ResultSet ingrName = execStat.executeQuery("SELECT cookiename FROM Cookie");
-				cookie.add("Search for any cookie");
+				ingr.add("Search for any cookie");
 				while (ingrName.next()) {
-					cookie.add(ingrName.getString(1));
+					ingr.add(ingrName.getString(1));
 				}
-				String[] returnArray = cookie.toArray(new String[cookie.size()]);
+				String[] returnArray = ingr.toArray(new String[ingr.size()]);
 				return returnArray;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -129,7 +127,7 @@ public class Database {
 				execStat.setString(4, loc);
 				execStat.setString(5, null);
 				PreparedStatement stmt = conn.prepareStatement(
-						"UPDATE ingredient, (SELECT qty,ingrName from recipe where cookieName=?)q SET ingredient.saldo=(ingredient.saldo-(q.qty*"+palletMul+")) WHERE ingredient.ingrName = q.ingrName");
+						"UPDATE ingredient, (SELECT qty,ingrName from recipe where cookieName=?)q SET ingredient.saldo=(ingredient.saldo-q.qty) WHERE ingredient.ingrName = q.ingrName");
 				stmt.setString(1, cookieName);
 				if (stmt.executeUpdate() == 0) {
 					return null;

@@ -18,7 +18,7 @@ import javax.swing.DefaultListModel;
  */
 public class Database {
 	//Recepies in db is only 100 cookies, a pallet contains 5400
-	final static String palletMul="54";
+	final static String palletMul="5.4";
 	/**
 	 * The database connection.
 	 */
@@ -129,9 +129,9 @@ public class Database {
 				execStat.setString(4, loc);
 				execStat.setString(5, null);
 				PreparedStatement stmt = conn.prepareStatement(
-						"UPDATE ingredient, (SELECT qty,ingrName from recipe where cookieName=?)q SET ingredient.saldo=(ingredient.saldo-(q.qty*"+palletMul+")) WHERE ingredient.ingrName = q.ingrName");
+						"UPDATE ingredient, (SELECT qty,ingrName from recipe where cookieName=?)q SET ingredient.saldo=(ingredient.saldo-(q.qty*palletMul+) WHERE ingredient.ingrName = q.ingrName");
 				stmt.setString(1, cookieName);
-				if (stmt.executeUpdate() == 0) {
+				if (stmt.executeUpdate() <= 0) {
 					return null;
 				}
 				execStat.executeUpdate();

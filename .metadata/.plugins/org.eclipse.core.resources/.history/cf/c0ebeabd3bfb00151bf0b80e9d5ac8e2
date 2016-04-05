@@ -18,7 +18,7 @@ import javax.swing.DefaultListModel;
  */
 public class Database {
 	//Recepies in db is only 100 cookies, a pallet contains 5400
-	final static String palletMul="54";
+	final static String palletMul="5.4";
 	/**
 	 * The database connection.
 	 */

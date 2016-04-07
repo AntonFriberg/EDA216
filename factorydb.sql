@@ -162,9 +162,9 @@ create table Pallet(
 
 -- billId, delDate, isDel, custName, custAddr
   insert into Bill values
-    (1, "2016-03-24", null, "Bjudkakor AB", "Ystad"),
-    (2, "2016-02-29", null, "Finkakor AB", "Helsingborg"),
-    (3, "2016-03-04", null, "Gästkakor AB", "Hässleholm");
+    (1, "2016-03-24", "Bjudkakor AB", "Ystad"),
+    (2, "2016-02-29", "Finkakor AB", "Helsingborg"),
+    (3, "2016-03-04", "Gästkakor AB", "Hässleholm");
 
 -- billId, cookieName, nbrOfPallets
   insert into BillSpec values

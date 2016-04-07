@@ -46,7 +46,6 @@ create table Customer(
 create table Bill(
   billId integer not null,
   delDate date not null,
-  isDel char(0) default null,
   custName varchar(40) not null,
   custAddr varchar(40) not null,
 

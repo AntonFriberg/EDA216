@@ -19,7 +19,7 @@ public class PalletDetailGUI extends JFrame {
 	public PalletDetailGUI(List<Pallet> selectedValues) {
 		super("Krusty Cookies AB");
 		int windowWidth = 700;
-		int windowHeight = selectedValues.size() < 30 ? 70+selectedValues.size()*15 : 530;
+		int windowHeight = selectedValues.size() < 30 ? 70+selectedValues.size()*16 : 530;
 		setPreferredSize(new Dimension(windowWidth, windowHeight));
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());

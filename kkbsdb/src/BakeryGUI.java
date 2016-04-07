@@ -69,7 +69,7 @@ public class BakeryGUI {
 
 			tabbedPane.addChangeListener(new ChangeHandler());
 			frame.addWindowListener(new WindowHandler());
-
+			
 			frame.setSize(600, 500);
 			frame.setVisible(true);
 		} else {

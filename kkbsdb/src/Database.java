@@ -122,6 +122,7 @@ public class Database {
 		if (isConnected()) {
 			try (PreparedStatement execStat = conn.prepareStatement("INSERT INTO pallet values (0,?,?,?,?,?);",
 					Statement.RETURN_GENERATED_KEYS)) {
+				conn.setAutoCommit(false);
 				String loc = "Freezer";
 				execStat.setString(1, cookieName);
 				execStat.setString(2, date);
@@ -139,9 +140,21 @@ public class Database {
 				while (result.next()) {
 					id = result.getInt(1);
 				}
+				conn.commit();
 			} catch (SQLException e) {
+				try {
+					conn.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
 				e.printStackTrace();
 				System.out.println(e);
+			} finally{
+				try {
+					conn.setAutoCommit(true);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		} else {
 			return null;

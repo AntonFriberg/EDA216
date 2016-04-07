@@ -1,6 +1,6 @@
 
 /**
- * Bakery is the main class for the cake production application. It
+ * Bakery is the main class for the Cake production application. It
  * creates a database object and the GUI to interface to the database.
  */
 public class Bakery {

@@ -64,8 +64,12 @@ public class Pallet {
 	public void setIsBlocked(String blocked) {
 		isBlocked=blocked;
 	}
-	
-	public String toString(){
+	/*
+	 * Formatting the output to fit a table-like structure
+	 * in the program using | as divider. 
+	 * Y means blocked, N means not blocked. 
+	 */
+	public String toString() {
 		String format = "%1$-5d %2$-10s %3$-18s";
 		String blocked = isBlocked() != null ? "Y" : "N";
 		return String.format(format, palletNbr,

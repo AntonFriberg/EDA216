@@ -33,7 +33,7 @@ public class BakeryGUI {
 	 */
 	public BakeryGUI(Database db) {
 		this.db = db;
-		JOptionPane conOptionPane=new JOptionPane();
+		//JOptionPane conOptionPane=new JOptionPane();
 		new Thread(new Runnable() {
 			public void run() {
 				ImageIcon icon=null;
@@ -54,7 +54,7 @@ public class BakeryGUI {
 		 * Establishes connection to the database.
 		 */
 		String userId = "db01";
-		String password = "dinmamma1";
+		String password = "db01kks";
 		String programTitle = "Krusty Cookies AB";
 		int windowWidth = 620;
 		int windowHeight = 500;

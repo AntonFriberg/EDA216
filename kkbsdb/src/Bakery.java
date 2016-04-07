@@ -1,6 +1,6 @@
 
 /**
- * MovieBooking is the main class for the movie ticket booking application. It
+ * Bakery is the main class for the cake production application. It
  * creates a database object and the GUI to interface to the database.
  */
 public class Bakery {

@@ -13,18 +13,15 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- * MovieGUI is the user interface to the movie database. It sets up the main
+ * BakeryGUI is the user interface to the Cake production database. It sets up the main
  * window and connects to the database.
  */
 public class BakeryGUI {
-	/**
-	 * db is the database object
-	 */
-	private Database db;
+	private Database db; // the database object
 
 	/**
-	 * tabbedPane is the contents of the window. It consists of two panes, User
-	 * login and Book tickets.
+	 * tabbedPane is the contents of the window. It consists of two panes, Pallet
+	 * search and Add pallet.
 	 */
 	private JTabbedPane tabbedPane;
 
@@ -32,7 +29,7 @@ public class BakeryGUI {
 	 * Create a GUI object and connect to the database.
 	 * 
 	 * @param db
-	 *            The database.
+	 * The database.
 	 */
 	public BakeryGUI(Database db) {
 		this.db = db;
@@ -41,25 +38,45 @@ public class BakeryGUI {
 			public void run() {
 				ImageIcon icon=null;
 		        try {
+		        	/*
+		        	 * Fetching loading icon to show when establishing connection to the database.
+		        	 */
 					icon = new ImageIcon(new URL("http://www.archisevilla.org/wp-content/themes/archisevilla/images/loading.gif"));
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 				}
-				conOptionPane.showOptionDialog(null,  "Connecting to database...", "Krusty Cookies AB",JOptionPane.DEFAULT_OPTION,
-						JOptionPane.INFORMATION_MESSAGE, icon, new Object[] {},null );
+				JOptionPane.showOptionDialog(null,  "Connecting to database...", "Krusty Cookies AB",JOptionPane.DEFAULT_OPTION,
+						JOptionPane.INFORMATION_MESSAGE, icon, new Object[] {},null ); //Changed to static access.
 			}
 		}).start();
 
-		/* --- change code here --- */
-		/* --- change xxx to your user name, yyy to your password --- */
-		if (db.openConnection("db01", "dinmamma1")) {
-			conOptionPane.getRootFrame().dispose();
-			JFrame frame = new JFrame("Krusty Cookies AB");
+		/*
+		 * Establishes connection to the database.
+		 */
+		String userId = "db01";
+		String password = "dinmamma1";
+		String programTitle = "Krusty Cookies AB";
+		int windowWidth = 620;
+		int windowHeight = 500;
+		
+		if (db.openConnection(userId, password)) {
+			JOptionPane.getRootFrame().dispose();
+			
+			/*
+			 * Main program frame.
+			 */
+			JFrame frame = new JFrame(programTitle);
 			tabbedPane = new JTabbedPane();
-
+			
+			/*
+			 * Search pane.
+			 */
 			SearchPane searchPane = new SearchPane(db);
 			tabbedPane.addTab("Pallet search", null, searchPane, "Used to search for one or more pallets");
-
+			
+			/*
+			 * Production pane. 
+			 */
 			ProductionPane prodPane = new ProductionPane(db);
 			tabbedPane.addTab("Add pallet", null, prodPane, "Add a produced pallet to the db");
 
@@ -69,12 +86,12 @@ public class BakeryGUI {
 
 			tabbedPane.addChangeListener(new ChangeHandler());
 			frame.addWindowListener(new WindowHandler());
-			
-			frame.setSize(600, 500);
+
+			frame.setSize(windowWidth, windowHeight);
 			frame.setVisible(true);
 		} else {
-			conOptionPane.getRootFrame().dispose();
-			JOptionPane.showMessageDialog(new JFrame(), "Could not connect to server, please try again", "Krusty Cookies AB",
+			JOptionPane.getRootFrame().dispose();
+			JOptionPane.showMessageDialog(new JFrame(), "Could not connect to server, please try again", programTitle,
 					JOptionPane.WARNING_MESSAGE);
 		}
 	}
